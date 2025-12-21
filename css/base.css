@@ -1,0 +1,62 @@
+/* ====================================================================
+   SECCIÓN 2: RESET GLOBAL Y ESTILOS BASE
+   ==================================================================== */
+
+/**
+ * Reset CSS universal
+ * Proporciona una base consistente para todos los elementos
+ */
+* {
+  box-sizing: border-box;           /* Incluye padding y border en el cálculo del ancho/alto */
+  -webkit-tap-highlight-color: transparent; /* Quita el destello azul en móviles al tocar */
+}
+
+/**
+ * Estilos del elemento raíz (body)
+ * Configuración base de la aplicación
+ */
+body {
+  margin: 0;                        /* Elimina márgenes por defecto del navegador */
+  font-family: var(--fuente-cuerpo); /* Usa la fuente Nunito para todo el texto */
+  background: var(--bg-negro);      /* Fondo negro oscuro en toda la pantalla */
+  color: var(--txt-blanco);         /* Texto blanco por defecto */
+  height: 100vh;                    /* Ocupa toda la altura de la ventana */
+  overflow: hidden;                 /* No permite desplazamiento en el body */
+}
+
+/* --- Utilidades Generales --- */
+.oculto {
+  display: none !important;         /* Oculta elementos completamente */
+}
+
+.texto-centro {
+  text-align: center;               /* Centra el texto horizontalmente */
+}
+
+.margen-superior {
+  margin-top: 20px;                 /* Añade 20px de espacio arriba */
+}
+
+.separacion-md {
+  gap: 10px;                        /* Espacio de 10px entre elementos flexibles */
+}
+
+.flexible-columna {
+  display: flex;                    /* Usa flexbox */
+  flex-direction: column;           /* Elementos apilados verticalmente */
+}
+
+.cuadricula-2-columnas {
+  display: grid;                    /* Usa CSS Grid */
+  grid-template-columns: 1fr 1fr;   /* Dos columnas de igual tamaño */
+}
+
+/* --- PANTALLAS: Contenedores principales --- */
+.pantalla {
+  position: fixed;                  /* Se queda en un lugar fijo sin moverse */
+  inset: 0;                         /* Cubre toda la pantalla (top, right, bottom, left = 0) */
+  padding: 20px;                    /* Espacio interno de 20px en todos los lados */
+  display: flex;                    /* Usa flexbox para organizar hijos */
+  flex-direction: column;           /* Los elementos se apilan verticalmente */
+  background: var(--bg-negro);      /* Fondo negro */
+}

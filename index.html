@@ -10,7 +10,13 @@
     <title>Cuentas Claras v5</title>
 
     <!-- Estilos CSS -->
-    <link rel="stylesheet" href="estilos.css" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="css/pin.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/modales.css" />
 
     <!-- Firebase - para autenticación y base de datos en tiempo real -->
     <!-- compat.js permite usar sintaxis antigua compatible -->
@@ -134,29 +140,18 @@
          ================================================================ -->
     <div id="pantalla-principal" class="pantalla oculto">
       <!-- Header global de la aplicación -->
-      <div class="header-global-compacto">
+      <div class="titulo-dashboard">
         <div class="logo-linea">
-          <span class="logo-texto"
-            >CUENTAS <span class="txt-rosa">CLARAS</span></span
-          >
-          <span class="logo-sub"
-            >y el chocolate espeso
-            <span class="icono-chocolate-mini">☕</span></span
-          >
+          <span class="primer-titulo-dashboard">LAS CUENTAS CLARAS</span>
+          <span class="segundo-titulo-dashboard">y el chocolate espeso
+          <span class="icono-dashboard">☕</span></span>
         </div>
       </div>
 
       <!-- Bienvenida y botón de salida -->
-      <div class="barra-usuario">
-        <span class="bienvenida"
-          >Bienvenido,
-          <span id="nombre-usuario-barra" class="nombre-usuario"
-            >Usuario</span
-          ></span
-        >
-        <button class="boton-salir" onclick="Autenticacion.cerrarSesion()">
-          Salir
-        </button>
+      <div class="linea-usuario">
+        <span class="bienvenida">Bienvenido, <span id="nombre-usuario-barra"Usuario</span></span>
+        <button class="boton-salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
       </div>
 
       <!-- Tarjeta principal con saldo total neto del usuario -->

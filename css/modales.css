@@ -1,0 +1,165 @@
+/* ====================================================================
+   SECCIÓN 7: SISTEMA DE MODALES
+   ==================================================================== */
+
+/* --- Fondo Modal (Overlay) --- */
+.fondo-modal {
+  position: fixed;                  /* Queda fijo en la pantalla */
+  inset: 0;                         /* Cubre toda la pantalla */
+  background: rgba(0, 0, 0, 0.85);  /* Negro transparente 85% */
+  display: flex;                    /* Usa flexbox */
+  align-items: flex-end;            /* Alinea elementos abajo */
+  visibility: hidden;               /* Invisible por defecto */
+  opacity: 0;                       /* Totalmente transparente */
+  transition: 0.3s;                 /* Animación suave */
+  z-index: 100;                     /* Encima de todo */
+}
+
+.fondo-modal.activo {
+  visibility: visible;              /* Se hace visible */
+  opacity: 1;                       /* Se hace opaco */
+}
+
+/* --- Contenedor Modal --- */
+.contenedor-modal {
+  background: var(--bg-tarjeta);    /* Fondo gris oscuro */
+  width: 100%;                      /* Ancho completo */
+  border-radius: 25px 25px 0 0;     /* Esquinas redondeadas arriba */
+  padding: 30px 20px;               /* Espacio interno */
+  border-top: 1px solid #444;       /* Línea gris arriba */
+}
+
+.contenedor-modal-historial {
+  max-height: 80vh;                 /* Alto máximo 80% de ventana */
+  display: flex;                    /* Usa flexbox */
+  flex-direction: column;           /* Elementos apilados verticalmente */
+}
+
+/* --- Modal de Socios --- */
+.lista-socios {
+  display: flex;                    /* Usa flexbox */
+  flex-direction: column;           /* Elementos apilados */
+  gap: 10px;                        /* Espacio entre elementos */
+}
+
+/* --- Modal de Historial --- */
+
+/**
+ * Encabezado del Historial
+ * Muestra las columnas: Fecha | Monto | Acción
+ */
+.encabezado-historial {
+  display: flex;                    /* Usa flexbox */
+  align-items: center;              /* Centra verticalmente */
+  gap: 10px;                        /* Espacio entre columnas */
+  padding: 10px 12px;               /* Espacio interno */
+  background: #1a1a1a;              /* Fondo muy oscuro */
+  border-radius: var(--borde-radio-pequeno); /* Esquinas redondeadas */
+  margin-bottom: 10px;              /* Espacio abajo */
+  font-size: 0.75rem;               /* Texto muy pequeño */
+  font-weight: bold;                /* Texto negrita */
+  color: var(--txt-gris);           /* Texto gris */
+  text-transform: uppercase;        /* Mayúsculas */
+  letter-spacing: 0.5px;            /* Espaciado entre letras */
+}
+
+.columna-fecha {
+  flex: 1;                          /* Ocupa espacio disponible */
+}
+
+.columna-monto {
+  min-width: 70px;                  /* Ancho mínimo para montos */
+  text-align: right;                /* Alinea a la derecha */
+}
+
+.columna-accion {
+  min-width: 80px;                  /* Ancho mínimo para botones */
+  text-align: center;               /* Centra el contenido */
+}
+
+/**
+ * Lista de Historial
+ * Contenedor desplazable para las transacciones
+ */
+.lista-historial {
+  flex: 1;                          /* Ocupa todo el espacio disponible */
+  overflow-y: auto;                 /* Permite desplazamiento vertical */
+  margin-bottom: 20px;              /* Espacio abajo */
+  max-height: 55vh;                 /* Alto máximo 55% de ventana */
+}
+
+/**
+ * Fila de Historial
+ * Representa una transacción individual
+ */
+.fila-historial {
+  background: #2a2a2a;              /* Fondo gris oscuro */
+  border-radius: var(--borde-radio-pequeno); /* Esquinas redondeadas */
+  padding: 12px;                    /* Espacio interno */
+  margin-bottom: 10px;              /* Espacio entre filas */
+  display: flex;                    /* Usa flexbox */
+  align-items: center;              /* Centra verticalmente */
+  gap: 10px;                        /* Espacio entre elementos */
+  border-left: 3px solid #444;      /* Línea colorida a la izquierda */
+  transition: background 0.2s;      /* Cambio suave de color */
+}
+
+.fila-historial.pendiente {
+  background: #332200;              /* Fondo marrón para transacciones pendientes */
+  border-left-color: var(--color-secundario); /* Línea naranja */
+}
+
+/* --- Detalle de Fila de Historial --- */
+.detalle-fila {
+  flex: 1;                          /* Ocupa espacio disponible */
+  display: flex;                    /* Usa flexbox */
+  flex-direction: column;           /* Elementos apilados */
+  gap: 4px;                         /* Poco espacio entre elementos */
+}
+
+.fecha-fila {
+  font-size: 0.8rem;                /* Texto pequeño */
+  color: var(--txt-gris);           /* Color gris */
+}
+
+.descripcion-fila {
+  font-size: var(--tamaño-fuente-normal); /* Texto normal */
+  font-weight: 500;                 /* Semibold */
+}
+
+.monto-fila {
+  font-size: var(--tamaño-fuente-grande); /* Texto grande */
+  font-weight: bold;                /* Negrita */
+  min-width: 70px;                  /* Ancho mínimo */
+  text-align: right;                /* Alinea a la derecha */
+}
+
+.accion-fila {
+  min-width: 80px;                  /* Ancho mínimo */
+  text-align: center;               /* Centra el contenido */
+  display: flex;                    /* Usa flexbox */
+  flex-direction: column;           /* Elementos apilados */
+  align-items: center;              /* Centra horizontalmente */
+  gap: 2px;                         /* Poco espacio entre elementos */
+}
+
+/* --- Controles de Acción en Historial --- */
+.icono-eliminar {
+  font-size: 1.8rem;                /* Emoji grande */
+  cursor: pointer;                  /* Cursor de manita */
+  padding: 5px;                     /* Espacio interno */
+  transition: transform 0.1s;       /* Cambio rápido de tamaño */
+  user-select: none;                /* No permite seleccionar el emoji */
+}
+
+.icono-eliminar:active {
+  transform: scale(1.2);            /* Se agranda al presionar */
+}
+
+.etiqueta-eliminar {
+  font-size: 0.65rem;               /* Texto muy pequeño */
+  color: var(--txt-gris);           /* Color gris */
+  text-transform: uppercase;        /* Mayúsculas */
+  letter-spacing: 0.3px;            /* Espaciado entre letras */
+  margin-top: -3px;                 /* Acerca la etiqueta al emoji */
+}

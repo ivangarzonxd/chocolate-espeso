@@ -1,0 +1,298 @@
+/* ====================================================================
+   SECCIÓN 6: PANTALLA PRINCIPAL - Dashboard
+   ==================================================================== */
+
+/* --- Encabezado del Dashboard --- */
+.titulo-dashboard {
+  display: flex;                    /* Usa flexbox */
+  align-items: center;              /* Centra verticalmente */
+  justify-content: center;          /* Centra horizontalmente */
+  flex-direction: column;           /* Elementos apilados verticalmente */
+  margin-bottom: 15px;              /* Espacio de separación con el contenido de abajo */
+  padding: 12px 15px;               /* Espacio interno */
+  border-bottom: 1px solid #333;    /* Línea gris debajo que separa visualmente */
+  gap: 3px;                         /* Espacio entre elementos */
+}
+
+.logo-linea {
+  display: flex;                    /* Usa flexbox */
+  align-items: center;              /* Centra verticalmente */
+  justify-content: center;          /* Centra horizontalmente */
+  flex-wrap: nowrap;                /* No permite que se baje a segunda línea */
+  width: 100%;                      /* Ocupa ancho completo */
+  gap: 6px;                         /* Espacio entre textos */
+}
+
+.primer-titulo-dashboard {
+    font-family: 'BBH Bogle', sans-serif; /* Fuente artística para títulos */
+    font-size: 2.5rem;                /* Texto grande para PC */
+    color: var(--txt-blanco);         /* Texto blanco */
+    font-style: italic;               /* Texto en itálica */
+    white-space: nowrap;              /* No permite salto de línea */
+    font-weight: 900;                 /* Muy negrita */
+    letter-spacing: 2px;              /* Espaciado entre letras */
+}
+
+.segundo-titulo-dashboard {
+    font-family: damion, sans-serif;  /* Fuente */
+    font-size: 3.5rem;                /* Texto más grande para PC */
+    color: var(--txt-subtitulo);      /* Color rojo apagado */
+    display: flex;                    /* Usa flexbox para mantener emoji en línea */
+    align-items: center;              /* Centra verticalmente */
+    gap: 10px;                        /* Espacio entre texto e emoji */
+    white-space: nowrap;              /* No permite salto de línea */
+    padding-left: 0.3rem;             /* Pequeño espacio a la izquierda */
+}
+
+.icono-dashboard {
+  font-size: 1.8rem;                /* Emoji más grande */
+  opacity: 0.9;                     /* Ligeramente visible */
+  margin: 0;                        /* Sin márgenes */
+  padding: 0;                       /* Sin padding */
+}
+
+
+.encabezado-dashboard {
+  margin-bottom: 15px;    /* Espacio de separación con el contenido de abajo */
+  padding-bottom: 10px;   /* Espacio interno abajo del texto */
+  border-bottom: 1px solid #333; /* Línea gris debajo que separa visualmente */
+}
+
+/* --- Barra de Usuario --- */
+.linea-usuario {
+  display: flex;                    /* Usa flexbox */
+  align-items: center;              /* Centra verticalmente */
+  justify-content: space-between;   /* Espacio máximo entre elementos */
+  margin-bottom: 15px;              /* Espacio abajo */
+  padding: 10px 0;                  /* Espacio interno vertical */
+  gap: 10px;                        /* Espacio mínimo entre contenidos */
+  flex-wrap: nowrap;                /* No permite que se baje a segunda línea */
+}
+
+.bienvenida {
+  font-size: 1rem;                  /* Texto más grande */
+  color: var(--txt-gris);           /* Color gris */
+  white-space: nowrap;              /* No permite salto de línea */
+  flex-shrink: 0;                   /* No se encoge */
+}
+
+.boton-salir {
+  background-color: var(--text-gris); /* Fondo gris oscuro */
+  border: 1px solid #444;           /* Borde gris */
+  color: var(--txt-gris);           /* Texto gris */
+  padding: 8px 14px;                /* Espacio interno */
+  border-radius: var(--borde-radio-pequeno); /* Esquinas ligeramente redondeadas */
+  cursor: pointer;                  /* Cursor de manita */
+  font-size: 0.9rem;                /* Texto normal */
+  transition: all 0.2s;             /* Cambios suaves */
+  white-space: nowrap;              /* No permite salto de línea */
+  flex-shrink: 0;                   /* No se encoge */
+}
+
+.boton-salir:hover {
+  border-color: var(--color-marca); /* Borde rosa al pasar */
+  color: var(--color-marca);        /* Texto rosa al pasar */
+}
+
+.boton-salir:active {
+  transform: scale(0.95);           /* Se encoge al presionar */
+}
+
+/* --- Tarjeta de Saldo Total --- */
+.tarjeta-saldo-total {
+  background: var(--bg-tarjeta);    /* Fondo gris oscuro de tarjeta */
+  padding: 25px;                    /* Espacio interno: 25px en todos los lados */
+  border-radius: var(--borde-radio-grande); /* Esquinas redondeadas grandes (20px) */
+  text-align: center;               /* Centra todo el texto */
+  margin-bottom: 25px;              /* Separación con el siguiente elemento */
+  border: 1px solid #333;           /* Borde gris alrededor */
+}
+
+.etiqueta-saldo {
+  font-size: 0.8rem;            /* Texto pequeño (más pequeño que lo normal) */
+  color: var(--txt-gris);       /* Color gris para etiquetas */
+  text-transform: uppercase;    /* Convierte el texto a mayúsculas */
+}
+
+.valor-saldo {
+  font-size: 2.5rem;            /* Texto muy grande para el número del saldo */
+  margin: 10px 0 0 0;           /* 10px espacio arriba, 0 en otros lados */
+}
+
+.saldo-positivo {
+  color: var(--color-positivo); /* Verde - para cuando hay dinero a favor */
+}
+
+.saldo-negativo {
+  color: var(--color-negativo); /* Rojo - para cuando se debe dinero */
+}
+
+.saldo-neutral {
+  color: var(--txt-gris);       /* Gris - para cuando el saldo es 0 */
+}
+
+/* --- Contenedor de Cuentas --- */
+.contenedor-cuentas {
+  flex: 1;              /* Ocupa todo el espacio disponible en la pantalla */
+  overflow-y: auto;     /* Permite desplazamiento vertical si hay mucho contenido */
+  padding-bottom: 80px; /* Espacio abajo para que no se oculte bajo el botón flotante */
+}
+
+/* --- Fila de Cuenta --- */
+.fila-cuenta {
+  background: #252525;          /* Fondo gris oscuro para cada cuenta */
+  margin-bottom: 10px;          /* Espacio entre filas */
+  border-radius: var(--borde-radio-medio); /* Esquinas redondeadas (12px) */
+  display: flex;                /* Usa flexbox para organizar elementos en fila */
+  height: 65px;                 /* Altura fija de cada fila */
+  overflow: hidden;             /* Oculta lo que sobresale */
+  border-left: 4px solid;       /* Línea colorida a la izquierda (se asigna por JavaScript) */
+  transition: transform 0.2s;   /* Animación suave cuando se presiona */
+}
+
+.fila-cuenta:active {
+  transform: scale(0.98);       /* Se encoge un poco cuando se presiona */
+}
+
+/* --- Contenido Principal de Cuenta --- */
+.contenido-cuenta {
+  flex: 1;              /* Ocupa el espacio disponible entre borde y botón historial */
+  padding: 15px;        /* Espacio interno alrededor del texto */
+  display: flex;        /* Usa flexbox para organizar los textos */
+  flex-direction: column; /* Los elementos se apilan verticalmente */
+  justify-content: center; /* Centra verticalmente el contenido */
+  cursor: pointer;      /* Cambia el cursor a manita indicando que es clickeable */
+}
+
+.nombre-cuenta {
+  font-size: var(--tamaño-fuente-normal); /* Tamaño de texto normal (1rem) */
+  font-weight: bold;    /* Texto en negrita para que destaque */
+  margin-bottom: 3px;   /* Poco espacio entre nombre y saldo */
+}
+
+.saldo-cuenta {
+  font-size: 0.9rem;    /* Texto más pequeño que lo normal */
+  color: var(--txt-gris); /* Color gris para texto secundario */
+}
+
+/* --- Botón de Historial --- */
+.boton-historial-cuenta {
+  width: 60px;          /* Ancho fijo para el botón */
+  background: #333;     /* Fondo gris más oscuro */
+  display: flex;        /* Usa flexbox para centrar el icono */
+  flex-direction: column; /* Icono y texto apilados verticalmente */
+  justify-content: center; /* Centra verticalmente */
+  align-items: center;  /* Centra horizontalmente */
+  border-left: 1px solid #444; /* Línea que separa del contenido */
+  font-size: 1.4rem;    /* Tamaño grande para el icono emoji */
+  cursor: pointer;      /* Cursor de manita para indicar que es clickeable */
+  gap: 2px;             /* Pequeño espacio entre icono y texto */
+  transition: background 0.2s; /* Cambio suave de color al pasar el mouse */
+}
+
+.boton-historial-cuenta:hover {
+  background: #444;     /* Se ilumina un poco al pasar el mouse */
+}
+
+.boton-historial-cuenta::after {
+  content: "Historial"; /* Añade la palabra "Historial" después del icono */
+  font-size: 0.6rem;    /* Texto muy pequeño */
+  color: var(--txt-gris); /* Texto gris */
+  text-transform: uppercase; /* Convierte a mayúsculas */
+  letter-spacing: 0.5px; /* Espaciado entre letras */
+}
+
+/* --- Botón Flotante Inferior --- */
+.pie-fijo {
+  position: fixed;      /* Queda fijo en la pantalla sin moverse al desplazar */
+  bottom: 20px;         /* 20px desde el borde inferior */
+  left: 20px;           /* 20px desde el borde izquierdo */
+  right: 20px;          /* 20px desde el borde derecho (hace que tenga ancho completo) */
+}
+
+/* ====================================================================
+   MEDIA QUERIES - OPTIMIZACIÓN PARA MÓVIL
+   ==================================================================== */
+
+/**
+ * Pantallas pequeñas (menos de 480px)
+ * Optimiza espacios, tamaños de fuente y disposición
+ */
+@media (max-width: 480px) {
+  .titulo-dashboard {
+    margin-bottom: 10px;              /* Reduce margen */
+    padding: 6px 8px;                 /* Reduce padding */
+  }
+
+  .primer-titulo-dashboard {
+    font-size: 1rem;                  /* Reduce tamaño de fuente */
+    letter-spacing: 0.5px;            /* Reduce espaciado */
+  }
+
+  .segundo-titulo-dashboard {
+    font-size: 1.3rem;                /* Reduce tamaño */
+  }
+
+  .icono-dashboard {
+    font-size: 1.2rem;                /* Reduce emoji */
+  }
+
+  .barra-usuario {
+    margin-bottom: 12px;              /* Reduce margen */
+    padding: 8px 0;                   /* Reduce padding */
+    gap: 5px;                         /* Reduce gap */
+  }
+
+  .bienvenida {
+    font-size: 0.85rem;               /* Texto más pequeño */
+  }
+
+  .boton-salir {
+    padding: 5px 10px;                /* Padding más pequeño */
+    font-size: 0.75rem;               /* Texto más pequeño */
+  }
+
+  .tarjeta-saldo-total {
+    padding: 18px;                    /* Reduce padding */
+    margin-bottom: 20px;              /* Reduce margen */
+  }
+
+  .valor-saldo {
+    font-size: 2rem;                  /* Reduce tamaño del saldo */
+  }
+
+  .etiqueta-saldo {
+    font-size: 0.7rem;                /* Reduce tamaño */
+  }
+}
+
+/**
+ * Pantallas medianas (480px - 768px)
+ * Tabletas pequeñas y celulares grandes
+ */
+@media (max-width: 768px) {
+  .titulo-dashboard {
+    padding: 8px 10px;                /* Ajusta padding */
+  }
+
+  .primer-titulo-dashboard {
+    font-size: 1.15rem;               /* Tamaño intermedio */
+  }
+
+  .segundo-titulo-dashboard {
+    font-size: 1.5rem;                /* Tamaño intermedio */
+  }
+
+  .barra-usuario {
+    gap: 8px;                         /* Gap intermedio */
+  }
+
+  .bienvenida {
+    font-size: 0.9rem;                /* Tamaño intermedio */
+  }
+
+  .boton-salir {
+    padding: 6px 11px;                /* Padding intermedio */
+    font-size: 0.8rem;                /* Tamaño intermedio */
+  }
+}
