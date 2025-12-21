@@ -18,6 +18,7 @@
   /* Textos */
   --txt-blanco: #ffffff;    /* Texto principal */
   --txt-gris: #aaaaaa;      /* Texto secundario/deshabilitado */
+  --txt-subtitulo: rgb(198, 84, 84);  
   
   /* Colores temáticos */
   --rosa: #ff1744;          /* Color de marca (más vibrante) */
@@ -31,6 +32,14 @@
   --font-size-normal: 1rem; /* Tamaño de fuente normal */
   --font-size-grande: 1.2rem; /* Tamaño de fuente grande */
 }
+
+:root {
+  /* Fuentes del sistema */
+  --font-titulo: 'BBH Bogle', sans-serif;
+  --font-subtitulo: 'Damion', cursive;
+  --font-body: 'Nunito', sans-serif;
+}
+
 
 /**
  * RESET GLOBAL
@@ -47,7 +56,7 @@
  */
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: var(--font-body);
   background: var(--bg-negro);      /* Fondo oscuro */
   color: var(--txt-blanco);         /* Texto blanco por defecto */
   height: 100vh;                    /* Llenar altura de viewport */
@@ -194,28 +203,26 @@ body {
 }
 
 .logo-global {
+  font-family: var(--font-titulo);
   font-size: 2rem;
   letter-spacing: 3px;
   margin: 0;
   font-weight: 900;
   color: var(--txt-blanco);
-}
-
-.sub-logo {
-  font-size: 0.9rem;
-  color: var(--txt-gris);
-  margin: 5px 0 0 0;
   font-style: italic;
 }
 
-.icono-chocolate {
- 
+.sub-logo {
+  font-family: var(--font-subtitulo);
+  font-size: 2.4rem;
+  color: var(--txt-subtitulo);
+  margin: -9px 0 0 0;
+}
 
-.txt-rosa {
-  color: var(--rosa);
-} font-size: 1.5rem;
-  display: inline-block;
-  vertical-align: middle;
+.icono-chocolate {
+  font-size: 40px;
+  margin-left: 6px;   /* separa el icono del texto */
+  opacity: 0.8;       /* un toque suave */
 }
 
 /**

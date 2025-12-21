@@ -1,166 +1,288 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
+  <head>
     <!-- Meta información -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Cuentas Claras v5</title>
-    
+
     <!-- Estilos CSS -->
-    <link rel="stylesheet" href="estilos.css">
-    
+    <link rel="stylesheet" href="estilos.css" />
+
     <!-- Firebase - para autenticación y base de datos en tiempo real -->
     <!-- compat.js permite usar sintaxis antigua compatible -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fuente titulo -->
+    <link href="https://fonts.googleapis.com/css2?family=BBH+Bogle&display=swap" rel="stylesheet">
+    <!-- Fuente sutitulo -->
+    <link href="https://fonts.googleapis.com/css2?family=BBH+Bogle&family=Damion&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 
+  </head>
+  <body>
     <!-- ================================================================
          PANTALLA 1 - ACCESO: Selección de usuario
          ================================================================ -->
     <div id="pantalla-acceso" class="screen">
-        <!-- Header global de la aplicación -->
-        <div class="header-global">
-            <h1 class="logo-global">CUENTAS <span class="txt-rosa">CLARAS</span></h1>
-            <p class="sub-logo">y el chocolate espeso <span class="icono-chocolate">☕</span></p>
-        </div>
-        
-        <!-- Matriz de botones de usuarios (2x2) -->
-        <div class="user-grid">
-            <button class="btn-base btn-gris" onclick="Autenticacion.prepararAcceso('Ivan')">Ivan</button>
-            <button class="btn-base btn-gris" onclick="Autenticacion.prepararAcceso('Geral')">Geral</button>
-            <button class="btn-base btn-gris" onclick="Autenticacion.prepararAcceso('Michel')">Michel</button>
-            <button class="btn-base btn-gris" onclick="Autenticacion.prepararAcceso('Kimberly')">Kimberly</button>
-        </div>
+      <!-- Header global de la aplicación -->
+      <div class="header-global">
+        <h1 class="logo-global">LAS CUENTAS CLARAS</h1>
+        <p class="sub-logo">y el chocolate espeso</p>
+        <div class="icono-chocolate">☕</div>
+      </div>
+
+      <!-- Matriz de botones de usuarios (2x2) -->
+      <div class="user-grid">
+        <button
+          class="btn-base btn-gris"
+          onclick="Autenticacion.prepararAcceso('Ivan')"
+        >
+          Ivan
+        </button>
+        <button
+          class="btn-base btn-gris"
+          onclick="Autenticacion.prepararAcceso('Geral')"
+        >
+          Geral
+        </button>
+        <button
+          class="btn-base btn-gris"
+          onclick="Autenticacion.prepararAcceso('Michel')"
+        >
+          Michel
+        </button>
+        <button
+          class="btn-base btn-gris"
+          onclick="Autenticacion.prepararAcceso('Kimberly')"
+        >
+          Kimberly
+        </button>
+      </div>
     </div>
 
     <!-- ================================================================
          PANTALLA 2 - PIN: Ingreso del código de acceso
          ================================================================ -->
     <div id="pantalla-pin" class="screen hidden">
-        <!-- Header global de la aplicación -->
-        <div class="header-global">
-            <h1 class="logo-global">CUENTAS <span class="txt-rosa">CLARAS</span></h1>
-            <p class="sub-logo">y el chocolate espeso <span class="icono-chocolate">☕</span></p>
-        </div>
-        
-        <!-- Título dinámico: "Hola [nombre]" o "Crea tu PIN" -->
-        <h2 id="titulo-pin" class="txt-centro">PIN de Acceso</h2>
-        
-        <!-- Visor de asteriscos del PIN ingresado -->
-        <div class="pin-display" id="visor-pin"></div>
-        
-        <!-- Teclado numérico 3x4 (similar a calculadora) -->
-        <div class="numpad">
-            <button class="num-btn" onclick="Autenticacion.escribirPin(1)">1</button>
-            <button class="num-btn" onclick="Autenticacion.escribirPin(2)">2</button>
-            <button class="num-btn" onclick="Autenticacion.escribirPin(3)">3</button>
-            <button class="num-btn" onclick="Autenticacion.escribirPin(4)">4</button>
-            <button class="num-btn" onclick="Autenticacion.escribirPin(5)">5</button>
-            <button class="num-btn" onclick="Autenticacion.escribirPin(6)">6</button>
-            <button class="num-btn" onclick="Autenticacion.escribirPin(7)">7</button>
-            <button class="num-btn" onclick="Autenticacion.escribirPin(8)">8</button>
-            <button class="num-btn" onclick="Autenticacion.escribirPin(9)">9</button>
-            <button class="num-btn btn-txt-rojo" onclick="Autenticacion.limpiarPin()">C</button>
-            <button class="num-btn" onclick="Autenticacion.escribirPin(0)">0</button>
-            <button class="num-btn btn-txt-verde" onclick="Autenticacion.verificarPin()">OK</button>
-        </div>
+      <!-- Header global de la aplicación -->
+      <div class="header-global">
+        <h1 class="logo-global">LAS CUENTAS CLARAS</h1>
+        <p class="sub-logo">y el chocolate espeso</p>
+        <div class="icono-chocolate">☕</div>
+      </div>
+
+      <!-- Título dinámico: "Hola [nombre]" o "Crea tu PIN" -->
+      <h2 id="titulo-pin" class="txt-centro">PIN de Acceso</h2>
+
+      <!-- Visor de asteriscos del PIN ingresado -->
+      <div class="pin-display" id="visor-pin"></div>
+
+      <!-- Teclado numérico 3x4 (similar a calculadora) -->
+      <div class="numpad">
+        <button class="num-btn" onclick="Autenticacion.escribirPin(1)">
+          1
+        </button>
+        <button class="num-btn" onclick="Autenticacion.escribirPin(2)">
+          2
+        </button>
+        <button class="num-btn" onclick="Autenticacion.escribirPin(3)">
+          3
+        </button>
+        <button class="num-btn" onclick="Autenticacion.escribirPin(4)">
+          4
+        </button>
+        <button class="num-btn" onclick="Autenticacion.escribirPin(5)">
+          5
+        </button>
+        <button class="num-btn" onclick="Autenticacion.escribirPin(6)">
+          6
+        </button>
+        <button class="num-btn" onclick="Autenticacion.escribirPin(7)">
+          7
+        </button>
+        <button class="num-btn" onclick="Autenticacion.escribirPin(8)">
+          8
+        </button>
+        <button class="num-btn" onclick="Autenticacion.escribirPin(9)">
+          9
+        </button>
+        <button
+          class="num-btn btn-txt-rojo"
+          onclick="Autenticacion.limpiarPin()"
+        >
+          C
+        </button>
+        <button class="num-btn" onclick="Autenticacion.escribirPin(0)">
+          0
+        </button>
+        <button
+          class="num-btn btn-txt-verde"
+          onclick="Autenticacion.verificarPin()"
+        >
+          OK
+        </button>
+      </div>
     </div>
 
     <!-- ================================================================
          PANTALLA 3 - PRINCIPAL: Dashboard con saldos y transacciones
          ================================================================ -->
     <div id="pantalla-principal" class="screen hidden">
-        <!-- Header global de la aplicación -->
-        <div class="header-global-compacto">
-            <div class="logo-linea">
-                <span class="logo-texto">CUENTAS <span class="txt-rosa">CLARAS</span></span>
-                <span class="logo-sub">y el chocolate espeso <span class="icono-chocolate-mini">☕</span></span>
-            </div>
+      <!-- Header global de la aplicación -->
+      <div class="header-global-compacto">
+        <div class="logo-linea">
+          <span class="logo-texto"
+            >CUENTAS <span class="txt-rosa">CLARAS</span></span
+          >
+          <span class="logo-sub"
+            >y el chocolate espeso
+            <span class="icono-chocolate-mini">☕</span></span
+          >
         </div>
-        
-        <!-- Bienvenida y botón de salida -->
-        <div class="barra-usuario">
-            <span class="bienvenida">Bienvenido, <span id="nombre-usuario-barra" class="nombre-destacado">Usuario</span></span>
-            <button class="btn-salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
-        </div>
+      </div>
 
-        <!-- Tarjeta principal con saldo total neto del usuario -->
-        <div class="tarjeta-saldo">
-            <span class="lbl-saldo" id="etiqueta-saldo">Saldo Total</span>
-            <h2 class="val-saldo" id="valor-saldo-global">0€</h2>
-        </div>
+      <!-- Bienvenida y botón de salida -->
+      <div class="barra-usuario">
+        <span class="bienvenida"
+          >Bienvenido,
+          <span id="nombre-usuario-barra" class="nombre-destacado"
+            >Usuario</span
+          ></span
+        >
+        <button class="btn-salir" onclick="Autenticacion.cerrarSesion()">
+          Salir
+        </button>
+      </div>
 
-        <!-- Lista desplazable de cuentas con socios -->
-        <!-- Cada fila muestra: nombre, saldo neto, y botón de historial -->
-        <div class="lista-contenedor" id="lista-cuentas-contenedor"></div>
+      <!-- Tarjeta principal con saldo total neto del usuario -->
+      <div class="tarjeta-saldo">
+        <span class="lbl-saldo" id="etiqueta-saldo">Saldo Total</span>
+        <h2 class="val-saldo" id="valor-saldo-global">0€</h2>
+      </div>
 
-        <!-- Botón flotante para crear nuevo movimiento -->
-        <div class="footer-fijo">
-            <button class="btn-base btn-verde" onclick="Interfaz.abrirModal('modal-socios')">
-                + NUEVO MOVIMIENTO
-            </button>
-        </div>
+      <!-- Lista desplazable de cuentas con socios -->
+      <!-- Cada fila muestra: nombre, saldo neto, y botón de historial -->
+      <div class="lista-contenedor" id="lista-cuentas-contenedor"></div>
+
+      <!-- Botón flotante para crear nuevo movimiento -->
+      <div class="footer-fijo">
+        <button
+          class="btn-base btn-verde"
+          onclick="Interfaz.abrirModal('modal-socios')"
+        >
+          + NUEVO MOVIMIENTO
+        </button>
+      </div>
     </div>
 
     <!-- ================================================================
          MODAL 1 - SELECCIÓN DE SOCIO: Elige con quién hacer transacción
          ================================================================ -->
     <div id="modal-socios" class="modal-fondo">
-        <div class="modal-caja">
-            <h3 class="txt-centro">¿Con quién?</h3>
-            <!-- Lista generada dinámicamente con los otros usuarios -->
-            <div id="lista-socios-disponibles" class="flex-col gap-10"></div>
-            <button class="btn-base btn-link" onclick="Interfaz.cerrarModal('modal-socios')">Cancelar</button>
-        </div>
+      <div class="modal-caja">
+        <h3 class="txt-centro">¿Con quién?</h3>
+        <!-- Lista generada dinámicamente con los otros usuarios -->
+        <div id="lista-socios-disponibles" class="flex-col gap-10"></div>
+        <button
+          class="btn-base btn-link"
+          onclick="Interfaz.cerrarModal('modal-socios')"
+        >
+          Cancelar
+        </button>
+      </div>
     </div>
 
     <!-- ================================================================
          MODAL 2 - TRANSACCIÓN: Ingresa monto, concepto y tipo de préstamo
          ================================================================ -->
     <div id="modal-transaccion" class="modal-fondo">
-        <div class="modal-caja">
-            <!-- Nombre del socio seleccionado -->
-            <h2 id="titulo-socio-transaccion" class="txt-centro">Socio</h2>
-            
-            <!-- Botones para seleccionar tipo de transacción -->
-            <div class="grid-2 gap-10">
-                <button class="btn-base btn-verde-suave" onclick="Transacciones.prepararTipo('preste')">Le presté</button>
-                <button class="btn-base btn-rojo-suave" onclick="Transacciones.prepararTipo('me_prestaron')">Me prestó</button>
-            </div>
-            <button class="btn-base btn-azul" style="margin-top:10px" onclick="Transacciones.prepararTipo('abono')">Abonar / Pagar</button>
-            
-            <!-- Formulario: monto, concepto y guardar (se muestra después de seleccionar tipo) -->
-            <div id="seccion-formulario" class="hidden mt-20">
-                <input type="number" id="input-monto" class="input-pro" placeholder="Monto €">
-                <input type="text" id="input-concepto" class="input-pro" placeholder="Concepto">
-                <button class="btn-base btn-naranja" onclick="Transacciones.guardarMovimiento()">GUARDAR DATOS</button>
-            </div>
-            <button class="btn-base btn-link" onclick="Interfaz.cerrarModal('modal-transaccion')">Cerrar</button>
+      <div class="modal-caja">
+        <!-- Nombre del socio seleccionado -->
+        <h2 id="titulo-socio-transaccion" class="txt-centro">Socio</h2>
+
+        <!-- Botones para seleccionar tipo de transacción -->
+        <div class="grid-2 gap-10">
+          <button
+            class="btn-base btn-verde-suave"
+            onclick="Transacciones.prepararTipo('preste')"
+          >
+            Le presté
+          </button>
+          <button
+            class="btn-base btn-rojo-suave"
+            onclick="Transacciones.prepararTipo('me_prestaron')"
+          >
+            Me prestó
+          </button>
         </div>
+        <button
+          class="btn-base btn-azul"
+          style="margin-top: 10px"
+          onclick="Transacciones.prepararTipo('abono')"
+        >
+          Abonar / Pagar
+        </button>
+
+        <!-- Formulario: monto, concepto y guardar (se muestra después de seleccionar tipo) -->
+        <div id="seccion-formulario" class="hidden mt-20">
+          <input
+            type="number"
+            id="input-monto"
+            class="input-pro"
+            placeholder="Monto €"
+          />
+          <input
+            type="text"
+            id="input-concepto"
+            class="input-pro"
+            placeholder="Concepto"
+          />
+          <button
+            class="btn-base btn-naranja"
+            onclick="Transacciones.guardarMovimiento()"
+          >
+            GUARDAR DATOS
+          </button>
+        </div>
+        <button
+          class="btn-base btn-link"
+          onclick="Interfaz.cerrarModal('modal-transaccion')"
+        >
+          Cerrar
+        </button>
+      </div>
     </div>
 
     <!-- ================================================================
          MODAL 3 - HISTORIAL: Ver todas las transacciones con un socio
          ================================================================ -->
     <div id="modal-historial" class="modal-fondo">
-        <div class="modal-caja modal-historial-caja">
-            <!-- Nombre del socio -->
-            <h2 id="nombre-socio-historial" class="txt-centro">Historial</h2>
-            
-            <!-- Encabezados de columnas -->
-            <div class="historial-header">
-                <div class="header-col-fecha">Fecha / Concepto</div>
-                <div class="header-col-monto">Monto</div>
-                <div class="header-col-accion">Acción</div>
-            </div>
-            
-            <!-- Lista de transacciones -->
-            <div id="contenedor-historial" class="historial-lista"></div>
-            
-            <button class="btn-base btn-link" onclick="Interfaz.cerrarModal('modal-historial')">Cerrar</button>
+      <div class="modal-caja modal-historial-caja">
+        <!-- Nombre del socio -->
+        <h2 id="nombre-socio-historial" class="txt-centro">Historial</h2>
+
+        <!-- Encabezados de columnas -->
+        <div class="historial-header">
+          <div class="header-col-fecha">Fecha / Concepto</div>
+          <div class="header-col-monto">Monto</div>
+          <div class="header-col-accion">Acción</div>
         </div>
+
+        <!-- Lista de transacciones -->
+        <div id="contenedor-historial" class="historial-lista"></div>
+
+        <button
+          class="btn-base btn-link"
+          onclick="Interfaz.cerrarModal('modal-historial')"
+        >
+          Cerrar
+        </button>
+      </div>
     </div>
 
     <!-- ================================================================
@@ -176,6 +298,5 @@
     <script src="js/principal.js"></script>
     <!-- Gestión de transacciones y historial -->
     <script src="js/transacciones.js"></script>
-
-</body>
+  </body>
 </html>
