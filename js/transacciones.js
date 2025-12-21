@@ -158,14 +158,14 @@ const Transacciones = {
             const color = soyPagador ? "#00e676" : "#ff5252"; // Verde si es a favor, rojo si es en contra
 
             // Determinar estado y ícono del botón de eliminar
-            let filaClase = "hist-row";
+            let filaClase = "fila-historial";
             let checkIcono = "⬜";
             let textoBoton = "Eliminar";
             let clickAccion = `onclick="Transacciones.pedirBorrado('${t.id}')"`;
 
             if (t.estado === "borrar_pendiente") {
                 // Hay solicitud de eliminación pendiente
-                filaClase += " pending-row";
+                filaClase += " pendiente";
                 
                 if (t.solicitado_por === Autenticacion.usuarioActual) { 
                     // Yo solicité la eliminación
@@ -183,14 +183,14 @@ const Transacciones = {
             // Insertar fila en el historial
             contenedor.innerHTML += `
                 <div class="${filaClase}">
-                    <div class="row-det">
-                        <span class="row-date">${t.fecha_str} • ${esMio ? 'Tú' : t.creador}</span>
-                        <span class="row-desc">${t.concepto}</span>
+                    <div class="detalle-fila">
+                        <span class="fecha-fila">${t.fecha_str} • ${esMio ? 'Tú' : t.creador}</span>
+                        <span class="descripcion-fila">${t.concepto}</span>
                     </div>
-                    <div class="row-mon" style="color:${color}">${t.monto}€</div>
-                    <div class="row-tra">
-                        <div class="check-delete" ${clickAccion}>${checkIcono}</div>
-                        <div class="btn-eliminar-texto">${textoBoton}</div>
+                    <div class="monto-fila" style="color:${color}">${t.monto}€</div>
+                    <div class="accion-fila">
+                        <div class="icono-eliminar" ${clickAccion}>${checkIcono}</div>
+                        <div class="etiqueta-eliminar">${textoBoton}</div>
                     </div>
                 </div>`;
         });

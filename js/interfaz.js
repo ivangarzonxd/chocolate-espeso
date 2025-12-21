@@ -23,10 +23,10 @@ const Interfaz = {
      */
     cambiarPantalla(idPantalla) {
         // Ocultar todas las pantallas
-        document.querySelectorAll('.screen').forEach(pantalla => pantalla.classList.add('hidden'));
+        document.querySelectorAll('.pantalla').forEach(pantalla => pantalla.classList.add('oculto'));
         
         // Mostrar la pantalla solicitada
-        document.getElementById(idPantalla).classList.remove('hidden');
+        document.getElementById(idPantalla).classList.remove('oculto');
     },
 
     /**
@@ -42,7 +42,7 @@ const Interfaz = {
      */
     abrirModal(idModal) {
         const modal = document.getElementById(idModal);
-        modal.classList.add('active');
+        modal.classList.add('activo');
         
         // Si abre modal de socios: generar lista dinámicamente
         if (idModal === 'modal-socios') this.renderizarSociosEnModal();
@@ -54,7 +54,7 @@ const Interfaz = {
      * @param {string} idModal - ID del modal a cerrar
      */
     cerrarModal(idModal) {
-        document.getElementById(idModal).classList.remove('active');
+        document.getElementById(idModal).classList.remove('activo');
     },
 
     /**
@@ -70,7 +70,7 @@ const Interfaz = {
         USUARIOS.forEach(usuario => {
             if (usuario !== Autenticacion.usuarioActual) {
                 const btn = document.createElement('button');
-                btn.className = 'btn-user';
+                btn.className = 'boton-usuario';
                 btn.textContent = usuario;
                 btn.onclick = () => Transacciones.iniciarConSocio(usuario);
                 lista.appendChild(btn);

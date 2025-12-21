@@ -1,131 +1,136 @@
 /**
  * ==============================================================
- * ESTILOS GLOBALES - Cuentas Claras v5
+ * CUENTAS CLARAS - SISTEMA DE ESTILOS v6
  * ==============================================================
- * Diseño: Dark mode moderno con tema rosa/verde
- * Plataforma: Móvil y tablet (responsive)
- * Framework: CSS puro (sin librerías externas)
+ * 
+ * DESCRIPCIÓN:
+ *   Diseño profesional en dark mode para app de gestión financiera
+ *   Estructura modular organizada por componentes y pantallas
+ * 
+ * ORGANIZACIÓN:
+ *   1. Variables y configuración global
+ *   2. Reset y estilos base
+ *   3. Sistema de componentes (botones, inputs, etc)
+ *   4. Pantalla de Login
+ *   5. Pantalla de PIN
+ *   6. Pantalla Principal (Dashboard)
+ *   7. Sistema de modales
+ * 
+ * AUTOR: Equipo Cuentas Claras
+ * FECHA: Diciembre 2025
  */
 
-/* ============================================================
-   VARIABLES DE COLOR - Sistema de colores consistente
-   ============================================================ */
-:root {
-  /* Fondos */
-  --bg-negro: #121212;      /* Fondo principal de la app */
-  --bg-tarjeta: #1e1e1e;    /* Fondo de tarjetas y modales */
-  
-  /* Textos */
-  --txt-blanco: #ffffff;    /* Texto principal */
-  --txt-gris: #aaaaaa;      /* Texto secundario/deshabilitado */
-  --txt-subtitulo: rgb(198, 84, 84);  
-  
-  /* Colores temáticos */
-  --rosa: #ff1744;          /* Color de marca (más vibrante) */
-  --verde: #00e676;         /* Positivo/ingresos */
-  --rojo: #ff5252;          /* Negativo/deudas */
-  --azul: #2979ff;          /* Primario/información */
-  --naranja: #ffab00;       /* Acción secundaria */
-  
-  /* Tamaños consistentes */
-  --btn-height: 55px;       /* Altura estándar de botones */
-  --font-size-normal: 1rem; /* Tamaño de fuente normal */
-  --font-size-grande: 1.2rem; /* Tamaño de fuente grande */
-}
+/* ====================================================================
+   SECCIÓN 1: VARIABLES Y CONFIGURACIÓN GLOBAL
+   ==================================================================== */
 
 :root {
-  /* Fuentes del sistema */
-  --font-titulo: 'BBH Bogle', sans-serif;
-  --font-subtitulo: 'Damion', cursive;
-  --font-body: 'Nunito', sans-serif;
+  /* --- Paleta de Colores --- */
+  --bg-negro: #121212;              /* Fondo principal oscuro */
+  --bg-tarjeta: #1e1e1e;            /* Fondo secundario para tarjetas */
+  --txt-blanco: #ffffff;            /* Texto principal */
+  --txt-gris: #aaaaaa;              /* Texto secundario */
+  --txt-subtitulo: rgb(198, 84, 84);/* Color de subtítulos */
+  
+  /* --- Colores Temáticos --- */
+  --color-marca: #ff1744;           /* Rosa - color principal de marca */
+  --color-positivo: #00e676;        /* Verde - para ingresos/positivos */
+  --color-negativo: #ff5252;        /* Rojo - para egresos/negativos */
+  --color-primario: #2979ff;        /* Azul - para acciones primarias */
+  --color-secundario: #ffab00;      /* Naranja - para acciones secundarias */
+  
+  /* --- Tamaños y Espaciado --- */
+  --altura-boton: 55px;             /* Alto estándar de botones */
+  --tamaño-fuente-normal: 1rem;     /* Tamaño base de texto */
+  --tamaño-fuente-grande: 1.2rem;   /* Tamaño expandido de texto */
+  --borde-radio-pequeno: 6px;       /* Radio de borde para inputs */
+  --borde-radio-medio: 12px;        /* Radio de borde para componentes */
+  --borde-radio-grande: 20px;       /* Radio de borde para tarjetas */
+  
+  /* --- Fuentes --- */
+  --fuente-titulo: 'BBH Bogle', sans-serif;
+  --fuente-subtitulo: 'Damion', cursive;
+  --fuente-cuerpo: 'Nunito', sans-serif;
 }
 
+/* ====================================================================
+   SECCIÓN 2: RESET GLOBAL Y ESTILOS BASE
+   ==================================================================== */
 
 /**
- * RESET GLOBAL
- * Preparar el navegador para nuestro diseño personalizado
+ * Reset CSS universal
+ * Proporciona una base consistente para todos los elementos
  */
 * {
-  box-sizing: border-box;           /* Incluir padding/border en width */
-  -webkit-tap-highlight-color: transparent; /* Remover flash de iOS */
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /**
- * ESTILOS BODY
+ * Estilos del elemento raíz (body)
  * Configuración base de la aplicación
  */
 body {
   margin: 0;
-  font-family: var(--font-body);
-  background: var(--bg-negro);      /* Fondo oscuro */
-  color: var(--txt-blanco);         /* Texto blanco por defecto */
-  height: 100vh;                    /* Llenar altura de viewport */
-  overflow: hidden;                 /* Evitar scroll de body */
+  font-family: var(--fuente-cuerpo);
+  background: var(--bg-negro);
+  color: var(--txt-blanco);
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* ============================================================
-   ESTRUCTURA DE PANTALLAS - Sistema de pantallas múltiples
-   ============================================================ */
+/* --- Utilidades Generales --- */
+.oculto {
+  display: none !important;
+}
 
-/**
- * SCREEN: Contenedor para cada pantalla principal
- * Solo una pantalla visible a la vez
- * Las demás se ocultan con clase 'hidden'
- */
-.screen {
+.texto-centro {
+  text-align: center;
+}
+
+.margen-superior {
+  margin-top: 20px;
+}
+
+.separacion-md {
+  gap: 10px;
+}
+
+.flexible-columna {
+  display: flex;
+  flex-direction: column;
+}
+
+.cuadricula-2-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ====================================================================
+   SECCIÓN 3: SISTEMA DE COMPONENTES REUTILIZABLES
+   ==================================================================== */
+
+/* --- PANTALLAS: Contenedores principales --- */
+.pantalla {
   position: fixed;
-  inset: 0;                         /* Ocupar todo el viewport */
+  inset: 0;
   padding: 20px;
   display: flex;
   flex-direction: column;
   background: var(--bg-negro);
 }
 
-/* Ocultador universal */
-.hidden {
-  display: none !important;
-}
-
-/* Utilidades de texto */
-.txt-centro {
-  text-align: center;
-}
-
-/* Espaciadores */
-.mt-20 {
-  margin-top: 20px;
-}
-.gap-10 {
-  gap: 10px;
-}
-
-/* Layouts flexibles */
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Grid de 2 columnas */
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-/* ============================================================
-   COMPONENTES DE BOTONES - Sistema modular de botones
-   ============================================================ */
+/* --- BOTONES: Sistema modular de botones --- */
 
 /**
- * BTN-BASE: Estilo base para todos los botones
- * Propiedades unificadas para coherencia visual
- * Altura: 55px (55 píxeles consistente)
- * Transiciones suaves: escala + brillo
+ * Boton base: estilos comunes para todos los botones
+ * Proporciona: altura, transiciones, efectos de interacción
  */
-.btn-base {
-  height: var(--btn-height);        /* Altura unificada */
+.boton {
+  height: var(--altura-boton);
   border: none;
-  border-radius: 12px;
-  font-size: var(--font-size-normal);
+  border-radius: var(--borde-radio-medio);
+  font-size: var(--tamaño-fuente-normal);
   font-weight: bold;
   cursor: pointer;
   display: flex;
@@ -137,64 +142,71 @@ body {
   letter-spacing: 0.5px;
 }
 
-/**
- * Estado ACTIVE: Se ejecuta al presionar el botón
- * Escala reducida + brillo aumentado
- */
-.btn-base:active {
-  transform: scale(0.96);           /* Reducir tamaño */
-  filter: brightness(1.2);          /* Aumentar brillo */
+.boton:active {
+  transform: scale(0.96);
+  filter: brightness(1.2);
 }
 
-/* Variantes de botones según color y función */
-.btn-gris {
-  background: #333;                 /* Gris oscuro */
+/* Variantes de color */
+.boton-gris {
+  background: #333;
   color: white;
   border: 1px solid #444;
 }
 
-.btn-verde {
-  background: var(--verde);         /* Verde brillante */
+.boton-verde {
+  background: var(--color-positivo);
   color: #000;
-  height: 60px;                     /* Botón más grande */
+  height: 60px;
   font-size: 1.1rem;
 }
 
-.btn-verde-suave {
-  background: #1b5e20;              /* Verde oscuro */
+.boton-verde-suave {
+  background: #1b5e20;
   color: white;
 }
 
-.btn-rojo-suave {
-  background: #b71c1c;              /* Rojo oscuro */
+.boton-rojo-suave {
+  background: #b71c1c;
   color: white;
 }
 
-.btn-azul {
-  background: var(--azul);
+.boton-azul {
+  background: var(--color-primario);
   color: white;
 }
 
-.btn-naranja {
-  background: var(--naranja);       /* Naranja */
+.boton-naranja {
+  background: var(--color-secundario);
   color: black;
 }
 
-.btn-link {
-  background: transparent;          /* Sin fondo */
+.boton-transparente {
+  background: transparent;
   color: var(--txt-gris);
   text-transform: none;
 }
 
-/* ============================================================
-   PANTALLA DE LOGIN - Selección de usuario
-   ============================================================ */
+/* --- CAMPOS DE ENTRADA: Inputs personalizados --- */
+.campo-entrada {
+  width: 100%;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: white;
+  padding: 15px;
+  border-radius: var(--borde-radio-medio);
+  margin-bottom: 12px;
+  font-size: var(--tamaño-fuente-grande);
+  outline: none;
+  transition: border-color 0.2s;
+}
 
-/**
- * HEADER-GLOBAL: Logo consistente en todas las pantallas
- * Centrado y con espaciado apropiado
- */
-.header-global {
+.campo-entrada:focus {
+  border-color: var(--color-primario);
+}
+
+/* --- ENCABEZADOS: Headers reutilizables --- */
+.encabezado-global {
   text-align: center;
   margin-bottom: 15px;
   margin-top: 5px;
@@ -202,8 +214,8 @@ body {
   border-bottom: 1px solid #333;
 }
 
-.logo-global {
-  font-family: var(--font-titulo);
+.titulo-encabezado {
+  font-family: var(--fuente-titulo);
   font-size: 1.6rem;
   letter-spacing: 2px;
   margin: 0;
@@ -212,34 +224,39 @@ body {
   font-style: italic;
 }
 
-.sub-logo {
-  font-family: var(--font-subtitulo);
+.subtitulo-encabezado {
+  font-family: var(--fuente-subtitulo);
   font-size: 1.8rem;
   color: var(--txt-subtitulo);
   margin: -5px 0 0 0;
 }
 
-.icono-chocolate {
+.icono-marca {
   font-size: 28px;
-  margin-left: 4px;   /* separa el icono del texto */
-  opacity: 0.8;       /* un toque suave */
+  margin-left: 4px;
+  opacity: 0.8;
 }
 
-/**
- * HEADER-GLOBAL-DASHBOARD: Header compacto para el dashboard
- */
-.header-global-dashboard {
+/* ====================================================================
+   SECCIÓN 4: PANTALLA DE LOGIN - Selección de usuario
+   ==================================================================== */
+
+/* --- Encabezado de Login --- */
+.encabezado-login {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #333;
 }
 
-.logo-container {
+.contenedor-logo {
   text-align: center;
   margin-bottom: 8px;
 }
 
-.logo-global-pequeno {
+.logo-pequeno {
   font-size: 1.3rem;
   letter-spacing: 2px;
   margin: 0;
@@ -247,183 +264,199 @@ body {
   color: var(--txt-blanco);
 }
 
-.usuario-container {
+.contenedor-usuario {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.nombre-destacado {
+.nombre-usuario {
   font-weight: bold;
-  color: var(--rosa);
+  color: var(--color-marca);
   font-size: 1.1rem;
 }
 
-.btn-salir {
+.boton-salir {
   background: none;
   border: 1px solid #444;
   color: var(--txt-gris);
   padding: 6px 14px;
-  border-radius: 6px;
+  border-radius: var(--borde-radio-pequeno);
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.2s;
 }
 
-.btn-salir:hover {
-  border-color: var(--rosa);
-  color: var(--rosa);
+.boton-salir:hover {
+  border-color: var(--color-marca);
+  color: var(--color-marca);
 }
 
-.btn-salir:active {
+.boton-salir:active {
   transform: scale(0.95);
 }
 
-/**
- * USER-GRID: Matriz de botones de usuarios
- * 2 columnas x 2 filas
- */
-.user-grid {
+/* --- Grid de Usuarios --- */
+.cuadricula-usuarios {
   display: grid;
-  grid-template-columns: 1fr 1fr;   /* 2 columnas iguales */
-  gap: 15px;                        /* Espacio entre botones */
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
 }
 
-/* ============================================================
-   PANTALLA DE PIN - Ingreso de PIN numérico
-   ============================================================ */
-
-/**
- * PIN-DISPLAY: Visor de asteriscos del PIN
- * Muestra * por cada dígito ingresado
- */
-.pin-display {
-  font-size: 2.2rem;
+.boton-usuario {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: var(--txt-blanco);
+  padding: 18px;
+  border-radius: var(--borde-radio-medio);
+  font-size: var(--tamaño-fuente-grande);
+  font-weight: bold;
   text-align: center;
-  height: 40px;
-  color: var(--azul);               /* Azul para visibilidad */
-  letter-spacing: 12px;             /* Espaciado entre asteriscos */
-  margin-bottom: 12px;
-  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-/**
- * NUMPAD: Teclado numérico 3x4
- * Botones circulares similares a calculadora
- */
-.numpad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
-  gap: 12px;
-  max-width: 280px;
-  margin: 0 auto;
+.boton-usuario:active {
+  transform: scale(0.96);
+  background: #333;
 }
 
-.num-btn {
-  height: 60px;
-  width: 60px;
-  border-radius: 50%;               /* Botones circulares */
-  border: 1px solid #333;
-  background: #222;
-  color: white;
-  font-size: 1.3rem;
-}
+/* ====================================================================
+   SECCIÓN 5: PANTALLA DE PIN - Entrada de código numérico
+   ==================================================================== */
 
-.btn-txt-rojo {
-  color: var(--rojo);               /* Botón C (Cancelar) */
-}
-
-.btn-txt-verde {
-  color: var(--verde);              /* Botón OK (Aceptar) */
-}
-
-/* ============================================================
-   PANTALLA DE PIN - Contenedor específico
-   ============================================================ */
 #pantalla-pin {
   padding: 12px 20px;
   justify-content: flex-start;
   overflow-y: auto;
 }
 
+/* --- Título de Pantalla PIN --- */
 #titulo-pin {
   margin-top: 8px;
   margin-bottom: 8px;
   font-size: 1.3rem;
 }
 
-/* ============================================================
-   PANTALLA PRINCIPAL - Dashboard
-   ============================================================ */
+/* --- Visor de PIN --- */
+.visor-pin {
+  font-size: 2.2rem;
+  text-align: center;
+  height: 40px;
+  color: var(--color-primario);
+  letter-spacing: 12px;
+  margin-bottom: 12px;
+  margin-top: 10px;
+}
 
-/**
- * TARJETA-SALDO: Card principal con saldo total
- * Prominente en la parte superior
- */
-.tarjeta-saldo {
+/* --- Teclado Numérico (Numpad) --- */
+.teclado-numerico {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.tecla-numero {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  background: #222;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.tecla-numero:active {
+  transform: scale(0.9);
+  filter: brightness(1.2);
+}
+
+.tecla-cancelar {
+  color: var(--color-negativo);
+}
+
+.tecla-aceptar {
+  color: var(--color-positivo);
+}
+
+/* ====================================================================
+   SECCIÓN 6: PANTALLA PRINCIPAL - Dashboard
+   ==================================================================== */
+
+/* --- Encabezado del Dashboard --- */
+.encabezado-dashboard {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #333;
+}
+
+/* --- Tarjeta de Saldo Total --- */
+.tarjeta-saldo-total {
   background: var(--bg-tarjeta);
   padding: 25px;
-  border-radius: 20px;
+  border-radius: var(--borde-radio-grande);
   text-align: center;
   margin-bottom: 25px;
   border: 1px solid #333;
 }
 
-.lbl-saldo {
+.etiqueta-saldo {
   font-size: 0.8rem;
-  color: var(--txt-gris);           /* Texto secundario */
+  color: var(--txt-gris);
   text-transform: uppercase;
 }
 
-.val-saldo {
+.valor-saldo {
   font-size: 2.5rem;
   margin: 10px 0 0 0;
 }
 
-/**
- * Variantes de saldo según el balance
- * pos: Dinero a favor (positivo)
- * neg: Dinero en contra (negativo)
- * neu: Saldo cero (neutro)
- */
-.saldo-total.pos {
-  color: var(--verde);
+.saldo-positivo {
+  color: var(--color-positivo);
 }
 
-.saldo-total.neg {
-  color: var(--rojo);
+.saldo-negativo {
+  color: var(--color-negativo);
 }
 
-.saldo-total.neu {
+.saldo-neutral {
   color: var(--txt-gris);
 }
 
-/**
- * LISTA-CONTENEDOR: Área desplazable de cuentas
- * Flex: 1 para ocupar espacio disponible
- */
-.lista-contenedor {
-  flex: 1;                          /* Crecer para llenar espacio */
-  overflow-y: auto;                 /* Desplazamiento vertical */
-  padding-bottom: 80px;             /* Espacio para botón flotante */
+/* --- Contenedor de Cuentas --- */
+.contenedor-cuentas {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 80px;
 }
 
-/**
- * ACCOUNT-ROW: Fila de una cuenta con socio
- * Estilo: tarjeta con borde izquierdo coloreado
- */
-.account-row {
+/* --- Fila de Cuenta --- */
+.fila-cuenta {
   background: #252525;
   margin-bottom: 10px;
-  border-radius: 12px;
+  border-radius: var(--borde-radio-medio);
   display: flex;
   height: 65px;
   overflow: hidden;
-  border-left: 4px solid;           /* Borde coloreado dinámicamente */
+  border-left: 4px solid;
+  transition: transform 0.2s;
 }
 
-.acc-main-click {
-  flex: 1;                          /* Ocupar espacio disponible */
+.fila-cuenta:active {
+  transform: scale(0.98);
+}
+
+/* --- Contenido Principal de Cuenta --- */
+.contenido-cuenta {
+  flex: 1;
   padding: 15px;
   display: flex;
   flex-direction: column;
@@ -431,18 +464,19 @@ body {
   cursor: pointer;
 }
 
-.acc-name {
-  font-size: var(--font-size-normal);
+.nombre-cuenta {
+  font-size: var(--tamaño-fuente-normal);
   font-weight: bold;
   margin-bottom: 3px;
 }
 
-.acc-balance {
+.saldo-cuenta {
   font-size: 0.9rem;
   color: var(--txt-gris);
 }
 
-.acc-history-btn {
+/* --- Botón de Historial --- */
+.boton-historial-cuenta {
   width: 60px;
   background: #333;
   display: flex;
@@ -456,11 +490,11 @@ body {
   transition: background 0.2s;
 }
 
-.acc-history-btn:hover {
+.boton-historial-cuenta:hover {
   background: #444;
 }
 
-.acc-history-btn::after {
+.boton-historial-cuenta::after {
   content: "Historial";
   font-size: 0.6rem;
   color: var(--txt-gris);
@@ -468,120 +502,71 @@ body {
   letter-spacing: 0.5px;
 }
 
-/**
- * FOOTER-FIJO: Botón acción flotante
- * Fijo en la parte inferior
- */
-.footer-fijo {
+/* --- Botón Flotante Inferior --- */
+.pie-fijo {
   position: fixed;
   bottom: 20px;
   left: 20px;
   right: 20px;
 }
 
-/* ============================================================
-   SISTEMA DE MODALES - Overlays para acciones
-   ============================================================ */
+/* ====================================================================
+   SECCIÓN 7: SISTEMA DE MODALES
+   ==================================================================== */
 
-/**
- * MODAL-FONDO: Overlay oscuro del modal
- * Transición suave: invisible -> visible
- */
-.modal-fondo {
+/* --- Fondo Modal (Overlay) --- */
+.fondo-modal {
   position: fixed;
-  inset: 0;                         /* Llenar pantalla */
-  background: rgba(0, 0, 0, 0.85);  /* Oscuro semi-transparente */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
-  align-items: flex-end;            /* Abrir desde abajo */
+  align-items: flex-end;
   visibility: hidden;
   opacity: 0;
   transition: 0.3s;
-  z-index: 100;                     /* Sobre todo */
+  z-index: 100;
 }
 
-/**
- * MODAL-FONDO.ACTIVE: Estado cuando el modal está abierto
- */
-.modal-fondo.active {
+.fondo-modal.activo {
   visibility: visible;
   opacity: 1;
 }
 
-/**
- * MODAL-CAJA: Contenedor del modal
- * Abre desde la parte inferior con esquinas redondeadas
- */
-.modal-caja {
+/* --- Contenedor Modal --- */
+.contenedor-modal {
   background: var(--bg-tarjeta);
   width: 100%;
-  border-radius: 25px 25px 0 0;     /* Esquinas superiores redondeadas */
+  border-radius: 25px 25px 0 0;
   padding: 30px 20px;
   border-top: 1px solid #444;
 }
 
-/**
- * INPUT-PRO: Campos de entrada personalizados
- * Con focus effect en color azul
- */
-.input-pro {
-  width: 100%;
-  background: #2a2a2a;
-  border: 1px solid #444;
-  color: white;
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  font-size: var(--font-size-grande);
-  outline: none;
-}
-
-.input-pro:focus {
-  border-color: var(--azul);        /* Azul al enfocar */
-}
-
-/* ============================================================
-   MODAL DE SOCIOS - Selección mejorada
-   ============================================================ */
-
-/**
- * BTN-USER: Botón de selección de socio
- * Texto grande y centrado
- */
-.btn-user {
-  background: #2a2a2a;
-  border: 1px solid #444;
-  color: var(--txt-blanco);
-  padding: 18px;
-  border-radius: 12px;
-  font-size: var(--font-size-grande);
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-user:active {
-  transform: scale(0.96);
-  background: #333;
-}
-
-/* ============================================================
-   MODAL DE HISTORIAL - Vista de transacciones
-   ============================================================ */
-
-.modal-historial-caja {
+.contenedor-modal-historial {
   max-height: 80vh;
   display: flex;
   flex-direction: column;
 }
 
-.historial-header {
+/* --- Modal de Socios --- */
+.lista-socios {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* --- Modal de Historial --- */
+
+/**
+ * Encabezado del Historial
+ * Muestra las columnas: Fecha | Monto | Acción
+ */
+.encabezado-historial {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
   background: #1a1a1a;
-  border-radius: 8px;
+  border-radius: var(--borde-radio-pequeno);
   margin-bottom: 10px;
   font-size: 0.75rem;
   font-weight: bold;
@@ -590,68 +575,78 @@ body {
   letter-spacing: 0.5px;
 }
 
-.header-col-fecha {
+.columna-fecha {
   flex: 1;
 }
 
-.header-col-monto {
+.columna-monto {
   min-width: 70px;
   text-align: right;
 }
 
-.header-col-accion {
+.columna-accion {
   min-width: 80px;
   text-align: center;
 }
 
-.historial-lista {
+/**
+ * Lista de Historial
+ * Contenedor desplazable para las transacciones
+ */
+.lista-historial {
   flex: 1;
   overflow-y: auto;
   margin-bottom: 20px;
   max-height: 55vh;
 }
 
-.hist-row {
+/**
+ * Fila de Historial
+ * Representa una transacción individual
+ */
+.fila-historial {
   background: #2a2a2a;
-  border-radius: 10px;
+  border-radius: var(--borde-radio-pequeno);
   padding: 12px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
   border-left: 3px solid #444;
+  transition: background 0.2s;
 }
 
-.hist-row.pending-row {
+.fila-historial.pendiente {
   background: #332200;
-  border-left-color: var(--naranja);
+  border-left-color: var(--color-secundario);
 }
 
-.row-det {
+/* --- Detalle de Fila de Historial --- */
+.detalle-fila {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.row-date {
+.fecha-fila {
   font-size: 0.8rem;
   color: var(--txt-gris);
 }
 
-.row-desc {
-  font-size: var(--font-size-normal);
+.descripcion-fila {
+  font-size: var(--tamaño-fuente-normal);
   font-weight: 500;
 }
 
-.row-mon {
-  font-size: var(--font-size-grande);
+.monto-fila {
+  font-size: var(--tamaño-fuente-grande);
   font-weight: bold;
   min-width: 70px;
   text-align: right;
 }
 
-.row-tra {
+.accion-fila {
   min-width: 80px;
   text-align: center;
   display: flex;
@@ -660,18 +655,20 @@ body {
   gap: 2px;
 }
 
-.check-delete {
+/* --- Controles de Acción en Historial --- */
+.icono-eliminar {
   font-size: 1.8rem;
   cursor: pointer;
   padding: 5px;
   transition: transform 0.1s;
+  user-select: none;
 }
 
-.check-delete:active {
+.icono-eliminar:active {
   transform: scale(1.2);
 }
 
-.btn-eliminar-texto {
+.etiqueta-eliminar {
   font-size: 0.65rem;
   color: var(--txt-gris);
   text-transform: uppercase;

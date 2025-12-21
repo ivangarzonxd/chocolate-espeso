@@ -120,12 +120,12 @@ const Principal = {
 
             // Insertar HTML de la fila
             contenedor.innerHTML += `
-                <div class="account-row" style="border-left-color:${color}">
-                    <div class="acc-main-click" onclick="Transacciones.iniciarConSocio('${nombre}')">
-                        <div class="acc-name">${nombre} ${alerta}</div>
-                        <div class="acc-balance" style="color:${color}">${texto}</div>
+                <div class="fila-cuenta" style="border-left-color:${color}">
+                    <div class="contenido-cuenta" onclick="Transacciones.iniciarConSocio('${nombre}')">
+                        <div class="nombre-cuenta">${nombre} ${alerta}</div>
+                        <div class="saldo-cuenta" style="color:${color}">${texto}</div>
                     </div>
-                    <div class="acc-history-btn" onclick="Transacciones.verHistorialSocio('${nombre}')">📖</div>
+                    <div class="boton-historial-cuenta" onclick="Transacciones.verHistorialSocio('${nombre}')">📖</div>
                 </div>`;
         }
 
@@ -134,7 +134,7 @@ const Principal = {
         visor.innerText = `${Math.abs(saldoGeneral).toFixed(0)}€`;
         
         // Cambiar color del saldo según si es positivo/negativo/neutro
-        visor.className = `saldo-total ${saldoGeneral > 0 ? 'pos' : (saldoGeneral < 0 ? 'neg' : 'neu')}`;
+        visor.className = `saldo-positivo ${saldoGeneral > 0 ? '' : (saldoGeneral < 0 ? 'saldo-negativo' : 'saldo-neutral')}`.trim();
         
         // Cambiar etiqueta del saldo
         document.getElementById("etiqueta-saldo").innerText = saldoGeneral >= 0 ? "Te deben en total" : "Debes en total";
