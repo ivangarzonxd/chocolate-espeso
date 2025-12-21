@@ -1,0 +1,657 @@
+/**
+ * ==============================================================
+ * ESTILOS GLOBALES - Cuentas Claras v5
+ * ==============================================================
+ * Diseño: Dark mode moderno con tema rosa/verde
+ * Plataforma: Móvil y tablet (responsive)
+ * Framework: CSS puro (sin librerías externas)
+ */
+
+/* ============================================================
+   VARIABLES DE COLOR - Sistema de colores consistente
+   ============================================================ */
+:root {
+  /* Fondos */
+  --bg-negro: #121212;      /* Fondo principal de la app */
+  --bg-tarjeta: #1e1e1e;    /* Fondo de tarjetas y modales */
+  
+  /* Textos */
+  --txt-blanco: #ffffff;    /* Texto principal */
+  --txt-gris: #aaaaaa;      /* Texto secundario/deshabilitado */
+  
+  /* Colores temáticos */
+  --rosa: #ff1744;          /* Color de marca (más vibrante) */
+  --verde: #00e676;         /* Positivo/ingresos */
+  --rojo: #ff5252;          /* Negativo/deudas */
+  --azul: #2979ff;          /* Primario/información */
+  --naranja: #ffab00;       /* Acción secundaria */
+  
+  /* Tamaños consistentes */
+  --btn-height: 55px;       /* Altura estándar de botones */
+  --font-size-normal: 1rem; /* Tamaño de fuente normal */
+  --font-size-grande: 1.2rem; /* Tamaño de fuente grande */
+}
+
+/**
+ * RESET GLOBAL
+ * Preparar el navegador para nuestro diseño personalizado
+ */
+* {
+  box-sizing: border-box;           /* Incluir padding/border en width */
+  -webkit-tap-highlight-color: transparent; /* Remover flash de iOS */
+}
+
+/**
+ * ESTILOS BODY
+ * Configuración base de la aplicación
+ */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: var(--bg-negro);      /* Fondo oscuro */
+  color: var(--txt-blanco);         /* Texto blanco por defecto */
+  height: 100vh;                    /* Llenar altura de viewport */
+  overflow: hidden;                 /* Evitar scroll de body */
+}
+
+/* ============================================================
+   ESTRUCTURA DE PANTALLAS - Sistema de pantallas múltiples
+   ============================================================ */
+
+/**
+ * SCREEN: Contenedor para cada pantalla principal
+ * Solo una pantalla visible a la vez
+ * Las demás se ocultan con clase 'hidden'
+ */
+.screen {
+  position: fixed;
+  inset: 0;                         /* Ocupar todo el viewport */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-negro);
+}
+
+/* Ocultador universal */
+.hidden {
+  display: none !important;
+}
+
+/* Utilidades de texto */
+.txt-centro {
+  text-align: center;
+}
+
+/* Espaciadores */
+.mt-20 {
+  margin-top: 20px;
+}
+.gap-10 {
+  gap: 10px;
+}
+
+/* Layouts flexibles */
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Grid de 2 columnas */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ============================================================
+   COMPONENTES DE BOTONES - Sistema modular de botones
+   ============================================================ */
+
+/**
+ * BTN-BASE: Estilo base para todos los botones
+ * Propiedades unificadas para coherencia visual
+ * Altura: 55px (55 píxeles consistente)
+ * Transiciones suaves: escala + brillo
+ */
+.btn-base {
+  height: var(--btn-height);        /* Altura unificada */
+  border: none;
+  border-radius: 12px;
+  font-size: var(--font-size-normal);
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s, filter 0.2s;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/**
+ * Estado ACTIVE: Se ejecuta al presionar el botón
+ * Escala reducida + brillo aumentado
+ */
+.btn-base:active {
+  transform: scale(0.96);           /* Reducir tamaño */
+  filter: brightness(1.2);          /* Aumentar brillo */
+}
+
+/* Variantes de botones según color y función */
+.btn-gris {
+  background: #333;                 /* Gris oscuro */
+  color: white;
+  border: 1px solid #444;
+}
+
+.btn-verde {
+  background: var(--verde);         /* Verde brillante */
+  color: #000;
+  height: 60px;                     /* Botón más grande */
+  font-size: 1.1rem;
+}
+
+.btn-verde-suave {
+  background: #1b5e20;              /* Verde oscuro */
+  color: white;
+}
+
+.btn-rojo-suave {
+  background: #b71c1c;              /* Rojo oscuro */
+  color: white;
+}
+
+.btn-azul {
+  background: var(--azul);
+  color: white;
+}
+
+.btn-naranja {
+  background: var(--naranja);       /* Naranja */
+  color: black;
+}
+
+.btn-link {
+  background: transparent;          /* Sin fondo */
+  color: var(--txt-gris);
+  text-transform: none;
+}
+
+/* ============================================================
+   PANTALLA DE LOGIN - Selección de usuario
+   ============================================================ */
+
+/**
+ * HEADER-GLOBAL: Logo consistente en todas las pantallas
+ * Centrado y con espaciado apropiado
+ */
+.header-global {
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 10px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #333;
+}
+
+.logo-global {
+  font-size: 2rem;
+  letter-spacing: 3px;
+  margin: 0;
+  font-weight: 900;
+  color: var(--txt-blanco);
+}
+
+.sub-logo {
+  font-size: 0.9rem;
+  color: var(--txt-gris);
+  margin: 5px 0 0 0;
+  font-style: italic;
+}
+
+.icono-chocolate {
+ 
+
+.txt-rosa {
+  color: var(--rosa);
+} font-size: 1.5rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/**
+ * HEADER-GLOBAL-DASHBOARD: Header compacto para el dashboard
+ */
+.header-global-dashboard {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #333;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.logo-global-pequeno {
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  margin: 0;
+  font-weight: 900;
+  color: var(--txt-blanco);
+}
+
+.usuario-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nombre-destacado {
+  font-weight: bold;
+  color: var(--rosa);
+  font-size: 1.1rem;
+}
+
+.btn-salir {
+  background: none;
+  border: 1px solid #444;
+  color: var(--txt-gris);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.btn-salir:hover {
+  border-color: var(--rosa);
+  color: var(--rosa);
+}
+
+.btn-salir:active {
+  transform: scale(0.95);
+}
+
+/**
+ * USER-GRID: Matriz de botones de usuarios
+ * 2 columnas x 2 filas
+ */
+.user-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* 2 columnas iguales */
+  gap: 15px;                        /* Espacio entre botones */
+}
+
+/* ============================================================
+   PANTALLA DE PIN - Ingreso de PIN numérico
+   ============================================================ */
+
+/**
+ * PIN-DISPLAY: Visor de asteriscos del PIN
+ * Muestra * por cada dígito ingresado
+ */
+.pin-display {
+  font-size: 2.5rem;
+  text-align: center;
+  height: 50px;
+  color: var(--azul);               /* Azul para visibilidad */
+  letter-spacing: 15px;             /* Espaciado entre asteriscos */
+  margin-bottom: 20px;
+}
+
+/**
+ * NUMPAD: Teclado numérico 3x4
+ * Botones circulares similares a calculadora
+ */
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+  gap: 15px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.num-btn {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;               /* Botones circulares */
+  border: 1px solid #333;
+  background: #222;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.btn-txt-rojo {
+  color: var(--rojo);               /* Botón C (Cancelar) */
+}
+
+.btn-txt-verde {
+  color: var(--verde);              /* Botón OK (Aceptar) */
+}
+
+/* ============================================================
+   PANTALLA PRINCIPAL - Dashboard
+   ============================================================ */
+
+/**
+ * TARJETA-SALDO: Card principal con saldo total
+ * Prominente en la parte superior
+ */
+.tarjeta-saldo {
+  background: var(--bg-tarjeta);
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 25px;
+  border: 1px solid #333;
+}
+
+.lbl-saldo {
+  font-size: 0.8rem;
+  color: var(--txt-gris);           /* Texto secundario */
+  text-transform: uppercase;
+}
+
+.val-saldo {
+  font-size: 2.5rem;
+  margin: 10px 0 0 0;
+}
+
+/**
+ * Variantes de saldo según el balance
+ * pos: Dinero a favor (positivo)
+ * neg: Dinero en contra (negativo)
+ * neu: Saldo cero (neutro)
+ */
+.saldo-total.pos {
+  color: var(--verde);
+}
+
+.saldo-total.neg {
+  color: var(--rojo);
+}
+
+.saldo-total.neu {
+  color: var(--txt-gris);
+}
+
+/**
+ * LISTA-CONTENEDOR: Área desplazable de cuentas
+ * Flex: 1 para ocupar espacio disponible
+ */
+.lista-contenedor {
+  flex: 1;                          /* Crecer para llenar espacio */
+  overflow-y: auto;                 /* Desplazamiento vertical */
+  padding-bottom: 80px;             /* Espacio para botón flotante */
+}
+
+/**
+ * ACCOUNT-ROW: Fila de una cuenta con socio
+ * Estilo: tarjeta con borde izquierdo coloreado
+ */
+.account-row {
+  background: #252525;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  display: flex;
+  height: 65px;
+  overflow: hidden;
+  border-left: 4px solid;           /* Borde coloreado dinámicamente */
+}
+
+.acc-main-click {
+  flex: 1;                          /* Ocupar espacio disponible */
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.acc-name {
+  font-size: var(--font-size-normal);
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.acc-balance {
+  font-size: 0.9rem;
+  color: var(--txt-gris);
+}
+
+.acc-history-btn {
+  width: 60px;
+  background: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid #444;
+  font-size: 1.4rem;
+  cursor: pointer;
+  gap: 2px;
+  transition: background 0.2s;
+}
+
+.acc-history-btn:hover {
+  background: #444;
+}
+
+.acc-history-btn::after {
+  content: "Historial";
+  font-size: 0.6rem;
+  color: var(--txt-gris);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/**
+ * FOOTER-FIJO: Botón acción flotante
+ * Fijo en la parte inferior
+ */
+.footer-fijo {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
+
+/* ============================================================
+   SISTEMA DE MODALES - Overlays para acciones
+   ============================================================ */
+
+/**
+ * MODAL-FONDO: Overlay oscuro del modal
+ * Transición suave: invisible -> visible
+ */
+.modal-fondo {
+  position: fixed;
+  inset: 0;                         /* Llenar pantalla */
+  background: rgba(0, 0, 0, 0.85);  /* Oscuro semi-transparente */
+  display: flex;
+  align-items: flex-end;            /* Abrir desde abajo */
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s;
+  z-index: 100;                     /* Sobre todo */
+}
+
+/**
+ * MODAL-FONDO.ACTIVE: Estado cuando el modal está abierto
+ */
+.modal-fondo.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+/**
+ * MODAL-CAJA: Contenedor del modal
+ * Abre desde la parte inferior con esquinas redondeadas
+ */
+.modal-caja {
+  background: var(--bg-tarjeta);
+  width: 100%;
+  border-radius: 25px 25px 0 0;     /* Esquinas superiores redondeadas */
+  padding: 30px 20px;
+  border-top: 1px solid #444;
+}
+
+/**
+ * INPUT-PRO: Campos de entrada personalizados
+ * Con focus effect en color azul
+ */
+.input-pro {
+  width: 100%;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  font-size: var(--font-size-grande);
+  outline: none;
+}
+
+.input-pro:focus {
+  border-color: var(--azul);        /* Azul al enfocar */
+}
+
+/* ============================================================
+   MODAL DE SOCIOS - Selección mejorada
+   ============================================================ */
+
+/**
+ * BTN-USER: Botón de selección de socio
+ * Texto grande y centrado
+ */
+.btn-user {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: var(--txt-blanco);
+  padding: 18px;
+  border-radius: 12px;
+  font-size: var(--font-size-grande);
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-user:active {
+  transform: scale(0.96);
+  background: #333;
+}
+
+/* ============================================================
+   MODAL DE HISTORIAL - Vista de transacciones
+   ============================================================ */
+
+.modal-historial-caja {
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.historial-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #1a1a1a;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--txt-gris);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.header-col-fecha {
+  flex: 1;
+}
+
+.header-col-monto {
+  min-width: 70px;
+  text-align: right;
+}
+
+.header-col-accion {
+  min-width: 80px;
+  text-align: center;
+}
+
+.historial-lista {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  max-height: 55vh;
+}
+
+.hist-row {
+  background: #2a2a2a;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 3px solid #444;
+}
+
+.hist-row.pending-row {
+  background: #332200;
+  border-left-color: var(--naranja);
+}
+
+.row-det {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row-date {
+  font-size: 0.8rem;
+  color: var(--txt-gris);
+}
+
+.row-desc {
+  font-size: var(--font-size-normal);
+  font-weight: 500;
+}
+
+.row-mon {
+  font-size: var(--font-size-grande);
+  font-weight: bold;
+  min-width: 70px;
+  text-align: right;
+}
+
+.row-tra {
+  min-width: 80px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.check-delete {
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.1s;
+}
+
+.check-delete:active {
+  transform: scale(1.2);
+}
+
+.btn-eliminar-texto {
+  font-size: 0.65rem;
+  color: var(--txt-gris);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-top: -3px;
+}
