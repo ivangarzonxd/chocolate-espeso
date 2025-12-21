@@ -45,7 +45,7 @@ const Transacciones = {
         document.getElementById("titulo-socio-transaccion").innerText = nombre;
         
         // Ocultar formulario hasta que se seleccione tipo de transacción
-        document.getElementById("seccion-formulario").classList.add("hidden");
+        document.getElementById("seccion-formulario").classList.add("oculto");
         
         // Abrir modal de transacción
         Interfaz.abrirModal('modal-transaccion');
@@ -64,7 +64,7 @@ const Transacciones = {
         this.tipoSeleccionado = tipo;
         
         // Mostrar formulario de monto y concepto
-        document.getElementById("seccion-formulario").classList.remove("hidden");
+        document.getElementById("seccion-formulario").classList.remove("oculto");
         
         // Enfocar automáticamente en el campo de monto
         document.getElementById("input-monto").focus();
