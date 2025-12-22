@@ -28,6 +28,17 @@ const Transacciones = {
     tipoSeleccionado: null,
 
     /**
+     * Destino del abono: 'general' o 'especifica'
+     * Solo se usa cuando tipoSeleccionado === 'abono'
+     */
+    abonoDestino: null,
+
+    /**
+     * ID de la deuda específica seleccionada (transacción original)
+     */
+    deudaRefId: null,
+
+    /**
      * Inicia una nueva transacción con un socio específico
      * Acciones:
      * 1. Guarda el nombre del socio
@@ -62,12 +73,112 @@ const Transacciones = {
      */
     prepararTipo(tipo) {
         this.tipoSeleccionado = tipo;
-        
-        // Mostrar formulario de monto y concepto
-        document.getElementById("seccion-formulario").classList.remove("oculto");
-        
-        // Enfocar automáticamente en el campo de monto
-        document.getElementById("input-monto").focus();
+
+        // Si es ABONO, pedir destino: general o específico
+        const opcionesAbono = document.getElementById("abono-opciones");
+        const contenedorEspecifico = document.getElementById("abono-especifico-contenedor");
+        const form = document.getElementById("seccion-formulario");
+        const concepto = document.getElementById("input-concepto");
+
+        if (tipo === 'abono') {
+            this.abonoDestino = null;
+            this.deudaRefId = null;
+            // Mostrar opciones de abono y ocultar formulario hasta elegir destino
+            opcionesAbono.classList.remove('oculto');
+            form.classList.add('oculto');
+            contenedorEspecifico.classList.add('oculto');
+            concepto.value = "";
+            concepto.disabled = true; // deshabilitado hasta elegir destino
+        } else {
+            // Para otros tipos, mostrar formulario normal
+            opcionesAbono.classList.add('oculto');
+            contenedorEspecifico.classList.add('oculto');
+            form.classList.remove('oculto');
+            // Limpiar y habilitar concepto
+            concepto.value = "";
+            concepto.placeholder = "Concepto";
+            concepto.disabled = false;
+            // Resetear flags de abono
+            this.abonoDestino = null;
+            this.deudaRefId = null;
+            document.getElementById("input-monto").focus();
+        }
+    },
+
+    /**
+     * El usuario elige destino del abono: general o deuda específica
+     * - general: no pide concepto, usa "Abono a capital"
+     * - específica: muestra selector con deudas activas del socio
+     */
+    seleccionarDestinoAbono(destino) {
+        this.abonoDestino = destino;
+        const opcionesAbono = document.getElementById("abono-opciones");
+        const form = document.getElementById("seccion-formulario");
+        const concepto = document.getElementById("input-concepto");
+        const contenedorEspecifico = document.getElementById("abono-especifico-contenedor");
+
+        if (destino === 'general') {
+            // Ocultar selector y fijar concepto
+            contenedorEspecifico.classList.add('oculto');
+            concepto.value = "Abono a capital";
+            concepto.placeholder = "(no requerido)";
+            concepto.disabled = true; // No editable para evitar errores
+            // Mostrar formulario
+            opcionesAbono.classList.add('oculto');
+            form.classList.remove('oculto');
+            document.getElementById("input-monto").focus();
+        } else {
+            // Abrir modal de selección y construir lista
+            opcionesAbono.classList.add('oculto');
+            form.classList.add('oculto');
+            contenedorEspecifico.classList.add('oculto');
+            concepto.value = "";
+            concepto.placeholder = "Selecciona una deuda";
+            concepto.disabled = true;
+            this.construirListaDeudasEspecificas();
+            Interfaz.abrirModal('modal-seleccion-deuda');
+        }
+    },
+
+    /**
+     * Construye la lista en el modal de selección de deuda específica
+     */
+    construirListaDeudasEspecificas() {
+        const cont = document.getElementById('lista-deudas-especificas');
+        cont.innerHTML = "";
+        const deudas = this.obtenerDeudasDelSocio(this.socioActivo)
+            .map(d => ({...d, restante: this.calcularSaldoConcepto(d.id)}))
+            .filter(d => d.restante > 0);
+        if (deudas.length === 0) {
+            cont.innerHTML = `<div class="fila-historial"><div class="detalle-fila"><span class="descripcion-fila">No hay deudas específicas pendientes</span></div></div>`;
+            return;
+        }
+        deudas.forEach(d => {
+            const color = '#ffab00';
+            cont.innerHTML += `
+                <div class="fila-historial" onclick="Transacciones.seleccionarDeudaEspecifica('${d.id}')">
+                    <div class="detalle-fila">
+                        <span class="fecha-fila">${d.fecha_str} • ${d.creador === Autenticacion.usuarioActual ? 'Tú' : d.creador}</span>
+                        <span class="descripcion-fila">${d.concepto} • original: ${d.monto}€ • pendiente: ${d.restante}€</span>
+                    </div>
+                    <div class="monto-fila" style="color:${color}">${d.restante}€</div>
+                </div>`;
+        });
+    },
+
+    /**
+     * Selecciona la deuda específica desde el modal
+     */
+    seleccionarDeudaEspecifica(refId) {
+        const conceptoInput = document.getElementById('input-concepto');
+        const form = document.getElementById('seccion-formulario');
+        const deudaOriginal = Principal.transaccionesGlobales.find(t => t.id === refId);
+        this.deudaRefId = refId;
+        conceptoInput.value = deudaOriginal ? `Abono a: ${deudaOriginal.concepto}` : 'Abono a deuda específica';
+        conceptoInput.disabled = true;
+        Interfaz.cerrarModal('modal-seleccion-deuda');
+        form.classList.remove('oculto');
+        document.getElementById('input-monto').focus();
     },
 
     /**
@@ -89,33 +200,134 @@ const Transacciones = {
      * }
      */
     guardarMovimiento() {
-        const monto = document.getElementById("input-monto").value;
-        const concepto = document.getElementById("input-concepto").value;
+        const montoStr = document.getElementById("input-monto").value;
+        const conceptoInput = document.getElementById("input-concepto").value;
+        const monto = parseFloat(montoStr);
         
-        // Validar que ambos campos tengan datos
-        if (!monto || !concepto) return alert("Faltan datos");
+        if (!monto || isNaN(monto) || monto <= 0) return alert("Monto inválido");
 
-        // Crear objeto de transacción
+        // Construir concepto final
+        let concepto = conceptoInput || "";
+        let tipoParaBalance = this.tipoSeleccionado;
+
+        // Si es abono, decidir signo correcto según saldo actual
+        if (this.tipoSeleccionado === 'abono') {
+            const saldo = this.obtenerSaldoConSocio(this.socioActivo);
+            if (this.abonoDestino === 'general') {
+                concepto = "Abono a capital";
+            } else if (this.abonoDestino === 'especifica' && this.deudaRefId) {
+                const deudaOriginal = Principal.transaccionesGlobales.find(t => t.id === this.deudaRefId);
+                const restante = this.calcularSaldoConcepto(this.deudaRefId) - monto;
+                concepto = `Abono a: ${deudaOriginal ? deudaOriginal.concepto : 'deuda específica'}`;
+                // Crear anotación de actualización sin afectar balance
+                const anotacion = {
+                    id: `${Date.now().toString()}-note`,
+                    creador: Autenticacion.usuarioActual,
+                    contraparte: this.socioActivo,
+                    tipo: 'anotacion',
+                    monto: 0,
+                    concepto: `Actualización ${deudaOriginal ? deudaOriginal.concepto : ''} (nuevo saldo: ${Math.max(restante,0)}€)`,
+                    fecha_str: new Date().toLocaleDateString("es-ES", {day:"numeric", month:"short"}),
+                    estado: 'activo',
+                    refId: this.deudaRefId
+                };
+                // Guardar anotación primero
+                db.collection("grupal_v4").doc("transacciones").update({
+                    lista: firebase.firestore.FieldValue.arrayUnion(anotacion)
+                });
+            } else if (this.abonoDestino === 'especifica' && !this.deudaRefId) {
+                return alert('Selecciona una deuda específica');
+            }
+            // set tipo para balance: si ellos me deben (saldo>0), un abono reduce => usar 'me_prestaron'
+            // si yo debo (saldo<0), un abono reduce mi deuda => usar 'preste'
+            tipoParaBalance = saldo > 0 ? 'me_prestaron' : 'preste';
+        }
+
         const nuevoMovimiento = {
-            id: Date.now().toString(), // ID único basado en timestamp
+            id: Date.now().toString(),
             creador: Autenticacion.usuarioActual,
             contraparte: this.socioActivo,
-            tipo: this.tipoSeleccionado,
-            monto: parseFloat(monto),
+            tipo: tipoParaBalance,
+            monto: monto,
             concepto: concepto,
             fecha_str: new Date().toLocaleDateString("es-ES", {day:"numeric", month:"short"}),
-            estado: "activo" // Nueva transacción, activa por defecto
+            estado: 'activo',
+            refId: this.deudaRefId || null
         };
 
-        // Guardar en Firestore (añade al array de transacciones)
         db.collection("grupal_v4").doc("transacciones").update({
             lista: firebase.firestore.FieldValue.arrayUnion(nuevoMovimiento)
         }).then(() => {
-            // Limpiar después de guardar
             Interfaz.cerrarModal('modal-transaccion');
             document.getElementById("input-monto").value = "";
             document.getElementById("input-concepto").value = "";
+            document.getElementById("abono-opciones").classList.add('oculto');
+            document.getElementById("abono-especifico-contenedor").classList.add('oculto');
         });
+    },
+
+    /**
+     * Obtiene el saldo actual con un socio específico
+     */
+    obtenerSaldoConSocio(socio) {
+        let saldo = 0;
+        Principal.transaccionesGlobales.forEach(t => {
+            if (t.estado === 'borrar_pendiente' || t.tipo === 'anotacion') return;
+            const monto = parseFloat(t.monto);
+            if ((t.creador === Autenticacion.usuarioActual && t.contraparte === socio)) {
+                saldo += (t.tipo === 'me_prestaron' ? -monto : monto);
+            } else if ((t.contraparte === Autenticacion.usuarioActual && t.creador === socio)) {
+                saldo += (t.tipo === 'me_prestaron' ? monto : -monto);
+            }
+        });
+        return saldo;
+    },
+
+    /**
+     * Lista de deudas activas del socio (transacciones originales de deuda)
+     * Considera como deuda original cualquier 'preste' o 'me_prestaron'
+     */
+    obtenerDeudasDelSocio(socio) {
+        // Transacciones entre ambos que representan deuda original
+        const candidatas = Principal.transaccionesGlobales.filter(t =>
+            (t.creador === Autenticacion.usuarioActual && t.contraparte === socio) ||
+            (t.creador === socio && t.contraparte === Autenticacion.usuarioActual)
+        ).filter(t => t.estado !== 'borrar_pendiente' && (t.tipo === 'preste' || t.tipo === 'me_prestaron') && !t.refId);
+
+        // Calcular efecto en el balance del usuario actual
+        const yoDebo = candidatas.filter(t => {
+            const monto = parseFloat(t.monto);
+            let efecto = 0;
+            if (t.creador === Autenticacion.usuarioActual) {
+                efecto = (t.tipo === 'me_prestaron') ? -monto : monto;
+            } else { // t.creador === socio
+                efecto = (t.tipo === 'me_prestaron') ? monto : -monto;
+            }
+            // Si efecto < 0: aumenta mi deuda (son deudas donde YO debo)
+            return efecto < 0;
+        });
+
+        // Ordenar por más reciente a más antigua (usando id timestamp)
+        yoDebo.sort((a,b) => parseInt(b.id) - parseInt(a.id));
+        return yoDebo;
+    },
+
+    /**
+     * Calcula saldo restante para una deuda específica (por refId)
+     * Suma el monto original y resta todos los abonos vinculados
+     */
+    calcularSaldoConcepto(refId) {
+        if (!refId) return 0;
+        let original = 0;
+        let abonado = 0;
+        Principal.transaccionesGlobales.forEach(t => {
+            if (t.estado === 'borrar_pendiente') return;
+            if (t.id === refId) original += parseFloat(t.monto);
+            if (t.refId === refId && t.tipo !== 'anotacion') abonado += parseFloat(t.monto);
+        });
+        // Para signo correcto: el cálculo de restante es el valor absoluto restante
+        const restante = Math.max(original - abonado, 0);
+        return Number(restante.toFixed(2));
     },
 
     /**

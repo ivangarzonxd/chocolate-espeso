@@ -37,26 +37,6 @@
   font-size: 1.1rem;                /* Texto grande */
 }
 
-.boton-salir {
-  background: none;                 /* Sin fondo */
-  border: 1px solid #444;           /* Borde gris */
-  color: var(--txt-gris);           /* Texto gris */
-  padding: 6px 14px;                /* Espacio interno reducido */
-  border-radius: var(--borde-radio-pequeno); /* Esquinas ligeramente redondeadas */
-  cursor: pointer;                  /* Cursor de manita */
-  font-size: 0.9rem;                /* Texto pequeño */
-  transition: all 0.2s;             /* Cambios suaves */
-}
-
-.boton-salir:hover {
-  border-color: var(--color-marca); /* Borde rosa al pasar */
-  color: var(--color-marca);        /* Texto rosa al pasar */
-}
-
-.boton-salir:active {
-  transform: scale(0.95);           /* Se encoge al presionar */
-}
-
 /* --- Grid de Usuarios --- */
 .cuadricula-usuarios {
   display: grid;                    /* Usa CSS Grid */

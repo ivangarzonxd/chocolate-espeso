@@ -67,6 +67,8 @@ const Principal = {
 
         // Procesar cada transacción
         this.transaccionesGlobales.forEach(t => {
+            // Ignorar anotaciones (no afectan balance)
+            if (t.tipo === 'anotacion') return;
             // Ignorar transacciones marcadas para eliminar
             if (t.estado === "borrar_pendiente") return;
             

@@ -90,48 +90,18 @@
 
       <!-- Teclado numérico 3x4 (similar a calculadora) -->
       <div class="teclado-numerico">
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(1)">
-          1
-        </button>
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(2)">
-          2
-        </button>
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(3)">
-          3
-        </button>
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(4)">
-          4
-        </button>
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(5)">
-          5
-        </button>
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(6)">
-          6
-        </button>
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(7)">
-          7
-        </button>
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(8)">
-          8
-        </button>
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(9)">
-          9
-        </button>
-        <button
-          class="tecla-numero tecla-cancelar"
-          onclick="Autenticacion.limpiarPin()"
-        >
-          C
-        </button>
-        <button class="tecla-numero" onclick="Autenticacion.escribirPin(0)">
-          0
-        </button>
-        <button
-          class="tecla-numero tecla-aceptar"
-          onclick="Autenticacion.verificarPin()"
-        >
-          OK
-        </button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(1)">1</button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(2)">2</button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(3)">3</button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(4)">4</button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(5)">5</button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(6)">6</button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(7)">7</button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(8)">8</button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(9)">9</button>
+        <button class="tecla-numero tecla-cancelar" onclick="Autenticacion.limpiarPin()">C</button>
+        <button class="tecla-numero" onclick="Autenticacion.escribirPin(0)">0</button>
+        <button class="tecla-numero tecla-aceptar" onclick="Autenticacion.verificarPin()">OK</button>
       </div>
     </div>
 
@@ -150,8 +120,8 @@
 
       <!-- Bienvenida y botón de salida -->
       <div class="linea-usuario">
-        <span class="bienvenida">Bienvenido, <span id="nombre-usuario-barra"Usuario</span></span>
-        <button class="boton-salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
+        <span class="bienvenida">Bienvenido, <span id="nombre-usuario-barra">Usuario</span></span>
+        <button class="boton-dashboard salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
       </div>
 
       <!-- Tarjeta principal con saldo total neto del usuario -->
@@ -165,13 +135,8 @@
       <div class="contenedor-cuentas" id="lista-cuentas-contenedor"></div>
 
       <!-- Botón flotante para crear nuevo movimiento -->
-      <div class="pie-fijo">
-        <button
-          class="boton boton-verde"
-          onclick="Interfaz.abrirModal('modal-socios')"
-        >
-          + NUEVO MOVIMIENTO
-        </button>
+      <div class="boton-nuevo-movimiento">
+        <button class="boton-dashboard inferior" onclick="Interfaz.abrirModal('modal-socios')"> + NUEVO MOVIMIENTO</button>
       </div>
     </div>
 
@@ -183,12 +148,7 @@
         <h3 class="texto-centro">¿Con quién?</h3>
         <!-- Lista generada dinámicamente con los otros usuarios -->
         <div id="lista-socios-disponibles" class="flexible-columna separacion-md"></div>
-        <button
-          class="boton boton-transparente"
-          onclick="Interfaz.cerrarModal('modal-socios')"
-        >
-          Cancelar
-        </button>
+        <button class="boton boton-transparente" onclick="Interfaz.cerrarModal('modal-socios')">Cancelar</button>
       </div>
     </div>
 
@@ -202,28 +162,24 @@
 
         <!-- Botones para seleccionar tipo de transacción -->
         <div class="cuadricula-2-columnas separacion-md">
-          <button
-            class="boton boton-verde-suave"
-            onclick="Transacciones.prepararTipo('preste')"
-          >
-            Le presté
-          </button>
-          <button
-            class="boton boton-rojo-suave"
-            onclick="Transacciones.prepararTipo('me_prestaron')"
-          >
-            Me prestó
-          </button>
+          <button class="boton boton-verde-suave" onclick="Transacciones.prepararTipo('preste')">Le presté</button>
+          <button class="boton boton-rojo-suave" onclick="Transacciones.prepararTipo('me_prestaron')">Me prestó</button>
         </div>
-        <button
-          class="boton boton-azul"
-          style="margin-top: 10px"
-          onclick="Transacciones.prepararTipo('abono')"
-        >
-          Abonar / Pagar
-        </button>
+        <button class="boton boton-azul" style="margin-top: 10px" onclick="Transacciones.prepararTipo('abono')">Abonar / Pagar</button>
 
         <!-- Formulario: monto, concepto y guardar (se muestra después de seleccionar tipo) -->
+        <!-- Opciones específicas para ABONO -->
+        <div id="abono-opciones" class="oculto margen-superior">
+          <div class="cuadricula-2-columnas separacion-md">
+            <button class="boton boton-blanco" onclick="Transacciones.seleccionarDestinoAbono('general')">Abonar al general</button>
+            <button class="boton boton-blanco" onclick="Transacciones.seleccionarDestinoAbono('especifica')">Abonar a deuda específica</button>
+          </div>
+          <!-- Selector de deuda específica (se muestra solo si corresponde) -->
+          <div id="abono-especifico-contenedor" class="oculto margen-superior">
+            <select id="selector-deuda-especifica" class="campo-entrada"></select>
+          </div>
+        </div>
+
         <div id="seccion-formulario" class="oculto margen-superior">
           <input
             type="number"
@@ -276,6 +232,22 @@
           onclick="Interfaz.cerrarModal('modal-historial')"
         >
           Cerrar
+        </button>
+      </div>
+    </div>
+
+    <!-- ================================================================
+         MODAL 4 - SELECCIÓN DE DEUDA ESPECÍFICA PARA ABONO
+         ================================================================ -->
+    <div id="modal-seleccion-deuda" class="fondo-modal">
+      <div class="contenedor-modal contenedor-modal-historial">
+        <h3 class="texto-centro">Selecciona una deuda específica</h3>
+        <div id="lista-deudas-especificas" class="lista-historial"></div>
+        <button
+          class="boton boton-transparente"
+          onclick="Interfaz.cerrarModal('modal-seleccion-deuda')"
+        >
+          Cancelar
         </button>
       </div>
     </div>

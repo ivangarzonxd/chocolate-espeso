@@ -36,6 +36,12 @@
   border: 1px solid #444;           /* Borde gris */
 }
 
+.boton-blanco {
+  background: var(--btn-fondo);     /* Fondo de los botones */
+  color: var(--btn-text);           /* Texto de los botones */
+  border: 1px solid var(--btn-border); /* Borde de los botones */
+}
+
 .boton-verde {
   background: var(--color-positivo); /* Verde brillante */
   color: #000;                      /* Texto negro para mejor contraste */
@@ -56,11 +62,6 @@
 .boton-azul {
   background: var(--color-primario); /* Azul */
   color: white;                     /* Texto blanco */
-}
-
-.boton-naranja {
-  background: var(--color-secundario); /* Naranja */
-  color: black;                     /* Texto negro para contraste */
 }
 
 .boton-transparente {

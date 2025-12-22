@@ -60,42 +60,45 @@
 
 /* --- Barra de Usuario --- */
 .linea-usuario {
-  display: flex;                    /* Usa flexbox */
-  align-items: center;              /* Centra verticalmente */
-  justify-content: space-between;   /* Espacio máximo entre elementos */
-  margin-bottom: 15px;              /* Espacio abajo */
-  padding: 10px 0;                  /* Espacio interno vertical */
-  gap: 10px;                        /* Espacio mínimo entre contenidos */
-  flex-wrap: nowrap;                /* No permite que se baje a segunda línea */
+  display: flex;              /* Coloca texto y botón en una sola línea */
+  align-items: center;        /* Centra verticalmente ambos elementos */
+  padding: 10px 0;            /* Espacio vertical interno */
+  font-size: 2em;        /* Tamaño de fuente medio */
+  /* No usamos justify-content: space-between para tener más control con margin-left: auto */
 }
 
 .bienvenida {
-  font-size: 1rem;                  /* Texto más grande */
-  color: var(--txt-gris);           /* Color gris */
-  white-space: nowrap;              /* No permite salto de línea */
-  flex-shrink: 0;                   /* No se encoge */
+  color: var(--txt-gris);     /* Color del texto de bienvenida */
+  white-space: nowrap;        /* Evita que el texto salte de línea */
 }
 
-.boton-salir {
-  background-color: var(--text-gris); /* Fondo gris oscuro */
-  border: 1px solid #444;           /* Borde gris */
-  color: var(--txt-gris);           /* Texto gris */
-  padding: 8px 14px;                /* Espacio interno */
-  border-radius: var(--borde-radio-pequeno); /* Esquinas ligeramente redondeadas */
-  cursor: pointer;                  /* Cursor de manita */
-  font-size: 0.9rem;                /* Texto normal */
-  transition: all 0.2s;             /* Cambios suaves */
-  white-space: nowrap;              /* No permite salto de línea */
-  flex-shrink: 0;                   /* No se encoge */
+.boton-dashboard {
+  background: var(--btn-fondo);                /* Fondo del botón */
+  color: var(--btn-text);                      /* Color del texto del botón */
+  transition: background 0.3s ease, color 0.3s ease; /* Transición suave para hover */
+  display: flex;                               /* Usa flexbox */
+  padding: 8px 14px;                           /* Espaciado interno */
+  border-radius: var(--borde-radio-pequeno);   /* Bordes redondeados */
+  border: 2px solid var(--btn-text);           /* Borde visible en los 4 lados */ 
+  cursor: pointer;                             /* Cursor de mano al pasar */
+  font-size: 1.5rem;                           /* Tamaño del texto */
+  transition: 0.2s;                            /* Transición suave para hover/active */
+  justify-content: center;          /* Centra horizontalmente el contenido */
 }
 
-.boton-salir:hover {
-  border-color: var(--color-marca); /* Borde rosa al pasar */
-  color: var(--color-marca);        /* Texto rosa al pasar */
+.salir {
+  margin-left: auto;                           /* Empuja el botón todo lo posible hacia la derecha */
+
 }
 
-.boton-salir:active {
-  transform: scale(0.95);           /* Se encoge al presionar */
+.boton-dashboard:hover {
+  background: var(--btn-text);   /* tono invertido */
+  color: var(--btn-fondo);
+  border-color: var(--btn-fondo);              /* Cambia el borde al tono invertido */
+}
+
+.boton-dashboard:active {
+  transform: scale(0.95);             /* Efecto de pulsado al hacer clic */
 }
 
 /* --- Tarjeta de Saldo Total --- */
@@ -203,11 +206,9 @@
 }
 
 /* --- Botón Flotante Inferior --- */
-.pie-fijo {
-  position: fixed;      /* Queda fijo en la pantalla sin moverse al desplazar */
-  bottom: 20px;         /* 20px desde el borde inferior */
-  left: 20px;           /* 20px desde el borde izquierdo */
-  right: 20px;          /* 20px desde el borde derecho (hace que tenga ancho completo) */
+
+.inferior {
+  width: 100%;                      /* Ocupa el ancho completo del contenedor */
 }
 
 /* ====================================================================

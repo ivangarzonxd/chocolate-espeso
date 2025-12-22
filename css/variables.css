@@ -18,8 +18,8 @@
   --color-secundario: #ffab00;      /* Naranja - para botones y acciones secundarias */
   
     /* --- Colores Botones --- */
-  --btn-fondo: #d5d5d5;                /* Fondo de los botones */
-  --btn-hover: #ffffff;          /* Fondo de los botones al pasar el cursor */
+  --btn-fondo: #d5d5d5;             /* Fondo de los botones */
+  --btn-hover: #ffffff;             /* Fondo de los botones al pasar el cursor */
   --btn-text: #000000;              /* Texto de los botones */
   --btn-border: #555555;            /* Borde de los botones */
 
