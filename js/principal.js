@@ -115,6 +115,9 @@ const Principal = {
 
             // Determinar color según el saldo
             const color = saldo > 0 ? "#00e676" : "#ff5252"; // Verde si me deben, rojo si debo
+            const sombra = saldo > 0
+                ? "8px 12px 20px rgba(0, 230, 118, 0.30), 2px 4px 10px rgba(0, 0, 0, 0.35)" // Sombra verde hacia abajo/derecha
+                : "8px 12px 20px rgba(255, 82, 82, 0.30), 2px 4px 10px rgba(0, 0, 0, 0.35)"; // Sombra roja hacia abajo/derecha
             const texto = saldo > 0 ? `Te debe ${saldo}€` : `Debes ${Math.abs(saldo)}€`;
             
             // Mostrar alerta si hay eliminación pendiente con este socio
@@ -122,7 +125,7 @@ const Principal = {
 
             // Insertar HTML de la fila
             contenedor.innerHTML += `
-                <div class="fila-cuenta" style="border-left-color:${color}">
+                <div class="fila-cuenta" style="border-left-color:${color}; box-shadow:${sombra}">
                     <div class="contenido-cuenta" onclick="Transacciones.iniciarConSocio('${nombre}')">
                         <div class="nombre-cuenta">${nombre} ${alerta}</div>
                         <div class="saldo-cuenta" style="color:${color}">${texto}</div>

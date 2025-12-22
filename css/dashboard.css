@@ -139,6 +139,8 @@
   flex: 1;              /* Ocupa todo el espacio disponible en la pantalla */
   overflow-y: auto;     /* Permite desplazamiento vertical si hay mucho contenido */
   padding-bottom: 80px; /* Espacio abajo para que no se oculte bajo el botón flotante */
+  padding-left: 20px;   /* Espacio izquierdo para ver sombra */
+  padding-right: 20px;  /* Espacio derecho para ver sombra */
 }
 
 /* --- Fila de Cuenta --- */
@@ -296,4 +298,31 @@
     padding: 6px 11px;                /* Padding intermedio */
     font-size: 0.8rem;                /* Tamaño intermedio */
   }
+}
+
+/* ====================================================================
+   SECCIÓN 6B: PANTALLA DE TRANSACCIÓN COMPLETA
+   ==================================================================== */
+
+.contenedor-transaccion-completo {
+  display: flex;                    /* Usa flexbox */
+  flex-direction: column;           /* Elementos apilados verticalmente */
+  height: 100%;                     /* Ocupa toda la altura de la pantalla */
+  padding: 30px 20px;               /* Espacio interno */
+}
+
+/* ====================================================================
+   SECCIÓN 6C: PANTALLA DE HISTORIAL COMPLETO
+   ==================================================================== */
+
+.contenedor-historial-pantalla {
+  display: flex;                    /* Usa flexbox */
+  flex-direction: column;           /* Elementos apilados verticalmente */
+  height: 100%;                     /* Ocupa toda la altura */
+  padding: 30px 20px;               /* Espacio interno */
+}
+
+.contenedor-historial-pantalla > .lista-historial {
+  flex: 1;                          /* Ocupa el espacio disponible */
+  overflow-y: auto;                 /* Permite desplazamiento */
 }

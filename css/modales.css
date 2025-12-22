@@ -15,6 +15,10 @@
   z-index: 100;                     /* Encima de todo */
 }
 
+.fondo-modal#modal-transaccion {
+  align-items: stretch;             /* El contenedor ocupa toda la altura */
+}
+
 .fondo-modal.activo {
   visibility: visible;              /* Se hace visible */
   opacity: 1;                       /* Se hace opaco */
@@ -33,6 +37,14 @@
   max-height: 80vh;                 /* Alto máximo 80% de ventana */
   display: flex;                    /* Usa flexbox */
   flex-direction: column;           /* Elementos apilados verticalmente */
+}
+
+.contenedor-modal-transaccion-completo {
+  height: 95vh;                     /* Alto 95% de pantalla para fullscreen */
+  display: flex;                    /* Usa flexbox */
+  flex-direction: column;           /* Elementos apilados verticalmente */
+  overflow-y: auto;                 /* Permite desplazamiento */
+  border-radius: 25px 25px 0 0;     /* Esquinas redondeadas arriba */
 }
 
 /* --- Modal de Socios --- */
@@ -85,7 +97,7 @@
   flex: 1;                          /* Ocupa todo el espacio disponible */
   overflow-y: auto;                 /* Permite desplazamiento vertical */
   margin-bottom: 20px;              /* Espacio abajo */
-  max-height: 55vh;                 /* Alto máximo 55% de ventana */
+  min-height: 150px;                /* Alto mínimo para garantizar visibilidad */
 }
 
 /**

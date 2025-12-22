@@ -153,10 +153,10 @@
     </div>
 
     <!-- ================================================================
-         MODAL 2 - TRANSACCIÓN: Ingresa monto, concepto y tipo de préstamo
+         PANTALLA 4 - TRANSACCIÓN: Formulario + Historial completo
          ================================================================ -->
-    <div id="modal-transaccion" class="fondo-modal">
-      <div class="contenedor-modal">
+    <div id="pantalla-transaccion" class="pantalla oculto">
+      <div class="contenedor-transaccion-completo">
         <!-- Nombre del socio seleccionado -->
         <h2 id="titulo-socio-transaccion" class="texto-centro">Socio</h2>
 
@@ -200,22 +200,31 @@
             GUARDAR DATOS
           </button>
         </div>
+
+        <!-- Divisor visual -->
+        <div style="margin: 25px 0; border-top: 1px solid #444;"></div>
+
+        <!-- Botón para mostrar historial en pantalla completa -->
+        <button class="boton boton-transparente" onclick="Transacciones.abrirHistorialPantalla()" style="margin-bottom: 15px;">
+          📖 Ver Historial
+        </button>
+
         <button
           class="boton boton-transparente"
-          onclick="Interfaz.cerrarModal('modal-transaccion')"
+          onclick="Interfaz.cambiarPantalla('pantalla-principal')"
         >
-          Cerrar
+          Volver
         </button>
       </div>
     </div>
 
     <!-- ================================================================
-         MODAL 3 - HISTORIAL: Ver todas las transacciones con un socio
+         PANTALLA 5 - HISTORIAL COMPLETO: Todas las transacciones
          ================================================================ -->
-    <div id="modal-historial" class="fondo-modal">
-      <div class="contenedor-modal contenedor-modal-historial">
+    <div id="pantalla-historial" class="pantalla oculto">
+      <div class="contenedor-historial-pantalla">
         <!-- Nombre del socio -->
-        <h2 id="nombre-socio-historial" class="texto-centro">Historial</h2>
+        <h2 id="nombre-socio-historial-pantalla" class="texto-centro" style="margin-bottom: 20px;">Historial</h2>
 
         <!-- Encabezados de columnas -->
         <div class="encabezado-historial">
@@ -225,13 +234,14 @@
         </div>
 
         <!-- Lista de transacciones -->
-        <div id="contenedor-historial" class="lista-historial"></div>
+        <div id="contenedor-historial-pantalla" class="lista-historial"></div>
 
         <button
           class="boton boton-transparente"
-          onclick="Interfaz.cerrarModal('modal-historial')"
+          onclick="Interfaz.cambiarPantalla('pantalla-transaccion')"
+          style="margin-top: 20px;"
         >
-          Cerrar
+          Volver
         </button>
       </div>
     </div>

@@ -43,8 +43,8 @@ const Transacciones = {
      * Acciones:
      * 1. Guarda el nombre del socio
      * 2. Cierra modal de selección de socios
-     * 3. Actualiza título del modal de transacción
-     * 4. Abre modal para ingresar monto y concepto
+     * 3. Actualiza título con el nombre del socio
+     * 4. Abre la pantalla de transacción completa
      * 
      * @param {string} nombre - Nombre del socio seleccionado
      */
@@ -52,14 +52,14 @@ const Transacciones = {
         this.socioActivo = nombre;
         Interfaz.cerrarModal('modal-socios');
         
-        // Actualizar título del modal con el nombre del socio
+        // Actualizar título con el nombre del socio
         document.getElementById("titulo-socio-transaccion").innerText = nombre;
         
         // Ocultar formulario hasta que se seleccione tipo de transacción
         document.getElementById("seccion-formulario").classList.add("oculto");
         
-        // Abrir modal de transacción
-        Interfaz.abrirModal('modal-transaccion');
+        // Cambiar a la pantalla de transacción (no modal, sino pantalla completa)
+        Interfaz.cambiarPantalla('pantalla-transaccion');
     },
 
     /**
@@ -79,18 +79,23 @@ const Transacciones = {
         const contenedorEspecifico = document.getElementById("abono-especifico-contenedor");
         const form = document.getElementById("seccion-formulario");
         const concepto = document.getElementById("input-concepto");
+        const botonAbonar = document.querySelector("button[onclick=\"Transacciones.prepararTipo('abono')\"]");
 
         if (tipo === 'abono') {
             this.abonoDestino = null;
             this.deudaRefId = null;
             // Mostrar opciones de abono y ocultar formulario hasta elegir destino
             opcionesAbono.classList.remove('oculto');
+            // Ocultar el botón "Abonar" para que en su lugar estén los dos botones
+            if (botonAbonar) botonAbonar.style.display = 'none';
             form.classList.add('oculto');
             contenedorEspecifico.classList.add('oculto');
             concepto.value = "";
             concepto.disabled = true; // deshabilitado hasta elegir destino
         } else {
             // Para otros tipos, mostrar formulario normal
+            // Mostrar botón "Abonar" nuevamente si se selecciona otro tipo
+            if (botonAbonar) botonAbonar.style.display = '';
             opcionesAbono.classList.add('oculto');
             contenedorEspecifico.classList.add('oculto');
             form.classList.remove('oculto');
@@ -331,11 +336,46 @@ const Transacciones = {
     },
 
     /**
+     * Abre la pantalla de historial completo
+     */
+    abrirHistorialPantalla() {
+        Interfaz.cambiarPantalla('pantalla-historial');
+        // Usar setTimeout para asegurar que la pantalla esté activa antes de llenar
+        setTimeout(() => {
+            this.cargarHistorial(this.socioActivo, true);
+        }, 50);
+    },
+
+    /**
+     * Toggle para mostrar/ocultar el historial
+     */
+    toggleHistorial() {
+        const wrapper = document.getElementById('contenedor-historial-wrapper');
+        const isHidden = wrapper.classList.contains('oculto');
+        
+        if (isHidden) {
+            // Mostrar y cargar historial
+            wrapper.classList.remove('oculto');
+            this.cargarHistorial(this.socioActivo, false);
+        } else {
+            // Ocultar
+            wrapper.classList.add('oculto');
+        }
+    },
+
+    /**
      * Abre el historial de transacciones desde el modal principal
      * Requiere que ya exista socioActivo
      */
     verHistorialDesdeModal() { 
-        if (this.socioActivo) this.verHistorialSocio(this.socioActivo); 
+        if (this.socioActivo) this.cargarHistorial(this.socioActivo, false); 
+    },
+
+    /**
+     * Compatibilidad: redirige a cargarHistorial
+     */
+    verHistorialSocio(socio) {
+        this.cargarHistorial(socio, false);
     },
 
     /**
@@ -347,13 +387,21 @@ const Transacciones = {
      * 4. Indica estado (activo, pendiente de borrar, etc.)
      * 
      * @param {string} socio - Nombre del socio
+     * @param {boolean} enPantalla - Si es true, usa contenedor de pantalla-historial
      */
-    verHistorialSocio(socio) {
+    cargarHistorial(socio, enPantalla = false) {
         this.socioActivo = socio;
-        const contenedor = document.getElementById("contenedor-historial");
         
-        // Actualizar encabezado del modal
-        document.getElementById("nombre-socio-historial").innerText = socio;
+        // Seleccionar contenedor según el contexto
+        const contenedor = enPantalla 
+            ? document.getElementById("contenedor-historial-pantalla")
+            : document.getElementById("contenedor-historial");
+        
+        // Actualizar encabezado según el contexto
+        if (enPantalla) {
+            document.getElementById("nombre-socio-historial-pantalla").innerText = `Historial - ${socio}`;
+        }
+        
         contenedor.innerHTML = "";
 
         // Filtrar transacciones relevantes: solo entre el usuario actual y este socio
@@ -406,9 +454,6 @@ const Transacciones = {
                     </div>
                 </div>`;
         });
-        
-        // Abrir modal con el historial
-        Interfaz.abrirModal('modal-historial');
     },
 
     /**
@@ -424,7 +469,6 @@ const Transacciones = {
         
         // Marcar como pendiente de borrado, indicando quién lo solicitó
         this.modificarEstado(id, "borrar_pendiente", Autenticacion.usuarioActual);
-        Interfaz.cerrarModal('modal-historial');
     },
 
     /**
@@ -442,7 +486,6 @@ const Transacciones = {
             
             // Guardar lista actualizada en Firestore
             db.collection("grupal_v4").doc("transacciones").update({ lista: nuevaLista });
-            Interfaz.cerrarModal('modal-historial');
         }
     },
 
