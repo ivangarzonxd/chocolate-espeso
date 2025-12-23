@@ -170,10 +170,8 @@
         <!-- Formulario: monto, concepto y guardar (se muestra después de seleccionar tipo) -->
         <!-- Opciones específicas para ABONO -->
         <div id="abono-opciones" class="oculto margen-superior">
-          <div class="cuadricula-2-columnas separacion-md">
-            <button class="boton boton-blanco" onclick="Transacciones.seleccionarDestinoAbono('general')">Abonar al general</button>
-            <button class="boton boton-blanco" onclick="Transacciones.seleccionarDestinoAbono('especifica')">Abonar a deuda específica</button>
-          </div>
+          <button class="boton boton-blanco" onclick="Transacciones.seleccionarDestinoAbono('general')">Abonar al general</button>
+          <button class="boton boton-blanco" style="margin-top: 10px;" onclick="Transacciones.seleccionarDestinoAbono('especifica')">Abonar a deuda específica</button>
           <!-- Selector de deuda específica (se muestra solo si corresponde) -->
           <div id="abono-especifico-contenedor" class="oculto margen-superior">
             <select id="selector-deuda-especifica" class="campo-entrada"></select>
@@ -224,25 +222,25 @@
     <div id="pantalla-historial" class="pantalla oculto">
       <div class="contenedor-historial-pantalla">
         <!-- Nombre del socio -->
-        <h2 id="nombre-socio-historial-pantalla" class="texto-centro" style="margin-bottom: 20px;">Historial</h2>
+        <h2 id="nombre-socio-historial-pantalla" class="texto-centro">Historial</h2>
 
         <!-- Encabezados de columnas -->
         <div class="encabezado-historial">
           <div class="columna-fecha">Fecha / Concepto</div>
           <div class="columna-monto">Monto</div>
-          <div class="columna-accion">Acción</div>
         </div>
 
         <!-- Lista de transacciones -->
         <div id="contenedor-historial-pantalla" class="lista-historial"></div>
 
-        <button
-          class="boton boton-transparente"
-          onclick="Interfaz.cambiarPantalla('pantalla-transaccion')"
-          style="margin-top: 20px;"
-        >
-          Volver
-        </button>
+        <!-- Barra inferior con acciones -->
+        <div class="barra-inferior-historial">
+          <div id="control-eliminar-pie" class="control-eliminar-pie" onclick="Transacciones.toggleModoEliminarHistorial()">
+            <span class="icono-eliminar">🗑️</span>
+            <span class="texto-eliminar">Eliminar un movimiento</span>
+          </div>
+          <button class="boton boton-transparente boton-volver-historial" onclick="Interfaz.cambiarPantalla('pantalla-transaccion')">Volver</button>
+        </div>
       </div>
     </div>
 

@@ -319,10 +319,71 @@
   display: flex;                    /* Usa flexbox */
   flex-direction: column;           /* Elementos apilados verticalmente */
   height: 100%;                     /* Ocupa toda la altura */
-  padding: 30px 20px;               /* Espacio interno */
+  padding: 20px;                    /* Espacio interno reducido */
+  padding-bottom: 0;                /* Sin espacio extra abajo */
+}
+
+.contenedor-historial-pantalla > h2 {
+  flex-shrink: 0;                   /* No se reduce */
+  margin: 0;                        /* Sin margen */
+  padding: 0;                       /* Sin padding */
+  font-size: 1.3rem;                /* Tamaño legible pero compacto */
+  min-height: 1.3rem;               /* Solo la altura del texto */
+}
+
+.contenedor-historial-pantalla > .encabezado-historial {
+  flex-shrink: 0;                   /* No se reduce */
+  margin-bottom: 8px;               /* Poco espacio */
 }
 
 .contenedor-historial-pantalla > .lista-historial {
   flex: 1;                          /* Ocupa el espacio disponible */
   overflow-y: auto;                 /* Permite desplazamiento */
+  margin-bottom: 0;                 /* Sin margen inferior, llega hasta la barra */
+}
+
+/* Barra inferior fija dentro del historial */
+.barra-inferior-historial {
+  display: flex;                    /* Distribuye controles en una línea */
+  align-items: center;              /* Centrado vertical */
+  justify-content: space-between;   /* Izquierda/ derecha */
+  padding: 10px 12px;               /* Espacio interno */
+  border-top: 1px solid #444;       /* Línea separadora superior */
+  background: #111;                 /* Fondo ligeramente más oscuro */
+  flex-shrink: 0;                   /* No se encoge: se mantiene visible */
+}
+
+.control-eliminar-pie {
+  display: flex;                    /* Icono + texto */
+  align-items: center;              /* Centrado vertical */
+  gap: 8px;                         /* Separación entre icono y texto */
+  cursor: pointer;                  /* Clickable */
+  user-select: none;                /* No seleccionable */
+}
+
+.control-eliminar-pie .icono-eliminar {
+  font-size: 1.8rem;                /* Tamaño óptimo para móvil */
+  line-height: 1;                   /* Compacto */
+}
+
+.control-eliminar-pie .texto-eliminar {
+  font-size: 0.95rem;               /* Texto legible pero compacto */
+  color: var(--txt-gris);           /* Color discreto */
+}
+
+.control-eliminar-pie.activo, .control-eliminar-pie.activo .texto-eliminar {
+  color: #ff5252;                   /* Rojo cuando el modo eliminar está activo */
+  text-shadow: 0 1px 6px rgba(255, 82, 82, 0.6);
+}
+
+.boton-volver-historial {
+  border-color: var(--txt-gris);    /* Borde gris para consistencia */
+  padding: 8px 15px;                /* Padding parejo arriba-abajo y lados */
+  font-size: 1rem;                  /* Texto más pequeño */
+  background: #222;                 /* Fondo ligeramente distinto */
+  min-width: auto;                  /* No ocupa ancho total */
+  width: auto;                      /* Override .boton width: 100% */
+  text-align: center;               /* Centrado del texto */
+  height: auto;                     /* Override altura estándar */
+  margin-left: auto;                /* Alinea a la derecha */
 }

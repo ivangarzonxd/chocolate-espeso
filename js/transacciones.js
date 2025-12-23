@@ -39,6 +39,11 @@ const Transacciones = {
     deudaRefId: null,
 
     /**
+     * Modo de eliminación en historial (si está activo, tocar una fila elimina o aprueba)
+     */
+    modoEliminarHistorial: false,
+
+    /**
      * Inicia una nueva transacción con un socio específico
      * Acciones:
      * 1. Guarda el nombre del socio
@@ -200,7 +205,7 @@ const Transacciones = {
      *   tipo: 'preste' | 'me_prestaron' | 'abono'
      *   monto: cantidad en euros
      *   concepto: descripción del movimiento
-     *   fecha_str: fecha formateada (ej: "20 dic")
+     *   fecha_str: fecha formateada (ej: "20 de diciembre de 2025")
      *   estado: 'activo' | 'borrar_pendiente'
      * }
      */
@@ -222,24 +227,8 @@ const Transacciones = {
                 concepto = "Abono a capital";
             } else if (this.abonoDestino === 'especifica' && this.deudaRefId) {
                 const deudaOriginal = Principal.transaccionesGlobales.find(t => t.id === this.deudaRefId);
-                const restante = this.calcularSaldoConcepto(this.deudaRefId) - monto;
                 concepto = `Abono a: ${deudaOriginal ? deudaOriginal.concepto : 'deuda específica'}`;
-                // Crear anotación de actualización sin afectar balance
-                const anotacion = {
-                    id: `${Date.now().toString()}-note`,
-                    creador: Autenticacion.usuarioActual,
-                    contraparte: this.socioActivo,
-                    tipo: 'anotacion',
-                    monto: 0,
-                    concepto: `Actualización ${deudaOriginal ? deudaOriginal.concepto : ''} (nuevo saldo: ${Math.max(restante,0)}€)`,
-                    fecha_str: new Date().toLocaleDateString("es-ES", {day:"numeric", month:"short"}),
-                    estado: 'activo',
-                    refId: this.deudaRefId
-                };
-                // Guardar anotación primero
-                db.collection("grupal_v4").doc("transacciones").update({
-                    lista: firebase.firestore.FieldValue.arrayUnion(anotacion)
-                });
+                // Ya no crear anotación - el saldo se muestra directamente en el historial
             } else if (this.abonoDestino === 'especifica' && !this.deudaRefId) {
                 return alert('Selecciona una deuda específica');
             }
@@ -255,7 +244,7 @@ const Transacciones = {
             tipo: tipoParaBalance,
             monto: monto,
             concepto: concepto,
-            fecha_str: new Date().toLocaleDateString("es-ES", {day:"numeric", month:"short"}),
+            fecha_str: new Date().toLocaleDateString("es-ES", {day:"numeric", month:"long", year:"numeric"}),
             estado: 'activo',
             refId: this.deudaRefId || null
         };
@@ -347,6 +336,36 @@ const Transacciones = {
     },
 
     /**
+     * Activa/Desactiva el modo de eliminar en el historial
+     * Al activar: las filas se pueden tocar para pedir/aprobar borrado
+     */
+    toggleModoEliminarHistorial() {
+        this.modoEliminarHistorial = !this.modoEliminarHistorial;
+        const controlPie = document.getElementById('control-eliminar-pie');
+        const lista = document.getElementById('contenedor-historial-pantalla');
+        if (controlPie) controlPie.classList.toggle('activo', this.modoEliminarHistorial);
+        if (lista) lista.classList.toggle('modo-eliminar-activo', this.modoEliminarHistorial);
+    },
+
+    /**
+     * Gestiona el toque en una fila del historial cuando el modo eliminar está activo
+     * - Si está 'activo' => solicita borrado
+     * - Si está 'borrar_pendiente' y lo solicitó otro => aprueba borrado
+     */
+    onClickFilaHistorial(id, estado, solicitadoPor) {
+        if (!this.modoEliminarHistorial) return;
+        if (estado === 'borrar_pendiente') {
+            if (solicitadoPor && solicitadoPor !== Autenticacion.usuarioActual) {
+                this.aprobarBorrado(id);
+            } else {
+                alert('Eliminación ya solicitada; esperando aprobación.');
+            }
+        } else {
+            this.pedirBorrado(id);
+        }
+    },
+
+    /**
      * Toggle para mostrar/ocultar el historial
      */
     toggleHistorial() {
@@ -405,54 +424,126 @@ const Transacciones = {
         contenedor.innerHTML = "";
 
         // Filtrar transacciones relevantes: solo entre el usuario actual y este socio
+        // Excluir anotaciones del historial visible
         const relevantes = Principal.transaccionesGlobales.filter(t => 
-            (t.creador === Autenticacion.usuarioActual && t.contraparte === socio) || 
-            (t.creador === socio && t.contraparte === Autenticacion.usuarioActual)
+            ((t.creador === Autenticacion.usuarioActual && t.contraparte === socio) || 
+            (t.creador === socio && t.contraparte === Autenticacion.usuarioActual)) &&
+            t.tipo !== 'anotacion'
         ).reverse(); // Invertir para mostrar más recientes primero
 
-        // Renderizar cada transacción
-        relevantes.forEach(t => {
-            // Determinar si el usuario actual fue quien prestó
-            const esMio = t.creador === Autenticacion.usuarioActual;
-            const soyPagador = (esMio && t.tipo !== "me_prestaron") || (!esMio && t.tipo === "me_prestaron");
-            const color = soyPagador ? "#00e676" : "#ff5252"; // Verde si es a favor, rojo si es en contra
-
-            // Determinar estado y ícono del botón de eliminar
-            let filaClase = "fila-historial";
-            let checkIcono = "⬜";
-            let textoBoton = "Eliminar";
-            let clickAccion = `onclick="Transacciones.pedirBorrado('${t.id}')"`;
-
-            if (t.estado === "borrar_pendiente") {
-                // Hay solicitud de eliminación pendiente
-                filaClase += " pendiente";
-                
-                if (t.solicitado_por === Autenticacion.usuarioActual) { 
-                    // Yo solicité la eliminación
-                    checkIcono = "⏳";
-                    textoBoton = "Esperando";
-                    clickAccion = ""; // No se puede hacer más nada
-                } else { 
-                    // El otro usuario solicitó la eliminación
-                    checkIcono = "⚠️";
-                    textoBoton = "Aprobar";
-                    clickAccion = `onclick="Transacciones.aprobarBorrado('${t.id}')"`; // Botón para aprobar
+        // Función auxiliar para convertir fecha corta a larga
+        const convertirFechaLarga = (fechaStr) => {
+            if (fechaStr && fechaStr.match(/^\d+\s\w+$/)) {
+                const partes = fechaStr.split(' ');
+                const dia = parseInt(partes[0]);
+                const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+                const mesIdx = meses.indexOf(partes[1]);
+                if (mesIdx >= 0) {
+                    const fecha = new Date(new Date().getFullYear(), mesIdx, dia);
+                    return fecha.toLocaleDateString("es-ES", {day:"numeric", month:"long", year:"numeric"});
                 }
             }
+            return fechaStr;
+        };
 
-            // Insertar fila en el historial
-            contenedor.innerHTML += `
-                <div class="${filaClase}">
+        // Agrupar abonos por su deuda original (globalmente, sin importar fecha)
+        const abonosPorDeuda = {};
+        relevantes.forEach(t => {
+            // Un abono específico es cualquier transacción con refId (sin importar el tipo)
+            if (t.refId && t.tipo !== 'anotacion') {
+                if (!abonosPorDeuda[t.refId]) {
+                    abonosPorDeuda[t.refId] = [];
+                }
+                abonosPorDeuda[t.refId].push(t);
+            }
+        });
+        // Ordenar los abonos de cada deuda cronológicamente (más antiguo primero)
+        Object.keys(abonosPorDeuda).forEach(deudaId => {
+            abonosPorDeuda[deudaId].sort((a, b) => parseInt(a.id) - parseInt(b.id));
+        });
+
+        console.log('=== DEBUG HISTORIAL ===');
+        console.log('Socio:', socio);
+        console.log('Total transacciones:', relevantes.length);
+        console.log('Abonos agrupados:', abonosPorDeuda);
+        console.log('Claves de deudas con abonos:', Object.keys(abonosPorDeuda));
+
+        // Función para renderizar una transacción
+        const renderTransaccion = (t, esAbonoBajo = false, deudaOriginalId = null) => {
+            const esMio = t.creador === Autenticacion.usuarioActual;
+            const soyPagador = (esMio && t.tipo !== "me_prestaron") || (!esMio && t.tipo === "me_prestaron");
+            const color = soyPagador ? "#00e676" : "#ff5252";
+            
+            let filaClase = "fila-historial";
+            // Un abono específico es cualquier transacción con refId (excepto anotaciones)
+            if (t.refId && t.tipo !== 'anotacion') {
+                filaClase += " abono-especifico" + (esAbonoBajo ? " bajo-deuda" : "");
+            }
+            if (t.estado === "borrar_pendiente") {
+                filaClase += " pendiente";
+            }
+            
+            // Si es un abono bajo deuda, calcular el saldo restante DESPUÉS de este abono
+            let conceptoFinal = t.concepto;
+            if (esAbonoBajo && deudaOriginalId) {
+                // Obtener la deuda original
+                const deudaOriginal = Principal.transaccionesGlobales.find(tr => tr.id === deudaOriginalId);
+                const montoOriginal = deudaOriginal ? parseFloat(deudaOriginal.monto) : 0;
+                
+                // Calcular total abonado HASTA e INCLUYENDO este abono
+                const totalAbonado = Principal.transaccionesGlobales
+                    .filter(tr => tr.refId === deudaOriginalId && tr.tipo !== 'anotacion' && parseInt(tr.id) <= parseInt(t.id))
+                    .reduce((sum, tr) => sum + parseFloat(tr.monto), 0);
+                
+                // Saldo restante = monto original - total abonado
+                const saldoRestante = Math.max(montoOriginal - totalAbonado, 0);
+                
+                // Mostrar solo "Abono" con el nuevo saldo (en rojo si es > 0)
+                const colorSaldo = saldoRestante > 0 ? '#ff5252' : '#888';
+                conceptoFinal = `Abono <span style="color:${colorSaldo}; font-size:0.75rem;">• Nuevo saldo: ${saldoRestante.toFixed(2)}€</span>`;
+            }
+            
+            console.log(`Renderizando: ${t.concepto} | tipo: ${t.tipo} | refId: ${t.refId} | clase: ${filaClase}`);
+            
+            return `
+                <div class="${filaClase}" onclick="Transacciones.onClickFilaHistorial('${t.id}', '${t.estado || 'activo'}', '${t.solicitado_por || ''}')">
                     <div class="detalle-fila">
-                        <span class="fecha-fila">${t.fecha_str} • ${esMio ? 'Tú' : t.creador}</span>
-                        <span class="descripcion-fila">${t.concepto}</span>
+                        <span class="fecha-fila">${esMio ? 'Tú' : t.creador}</span>
+                        <span class="descripcion-fila">${conceptoFinal}</span>
                     </div>
                     <div class="monto-fila" style="color:${color}">${t.monto}€</div>
-                    <div class="accion-fila">
-                        <div class="icono-eliminar" ${clickAccion}>${checkIcono}</div>
-                        <div class="etiqueta-eliminar">${textoBoton}</div>
-                    </div>
                 </div>`;
+        };
+
+        // Agrupar por fecha todas las transacciones (excepto abonos con refId que se renderizarán bajo su deuda)
+        const porFecha = {};
+        relevantes.forEach(t => {
+            // Saltar abonos específicos (tienen refId y no son anotaciones), se renderizan bajo su deuda
+            if (t.refId && t.tipo !== 'anotacion') return;
+            
+            const fechaLarga = convertirFechaLarga(t.fecha_str);
+            if (!porFecha[fechaLarga]) {
+                porFecha[fechaLarga] = [];
+            }
+            porFecha[fechaLarga].push(t);
+        });
+
+        // Renderizar agrupado por fecha
+        Object.keys(porFecha).forEach(fecha => {
+            // Insertar encabezado de fecha
+            contenedor.innerHTML += `<div class="encabezado-fecha">${fecha}</div>`;
+
+            // Renderizar transacciones de esa fecha
+            porFecha[fecha].forEach(t => {
+                contenedor.innerHTML += renderTransaccion(t, false, null);
+                
+                // Si es una deuda y tiene abonos específicos, renderizarlos debajo
+                if ((t.tipo === 'preste' || t.tipo === 'me_prestaron') && abonosPorDeuda[t.id]) {
+                    abonosPorDeuda[t.id].forEach(abono => {
+                        contenedor.innerHTML += renderTransaccion(abono, true, t.id);
+                    });
+                }
+            });
         });
     },
 
@@ -510,6 +601,154 @@ const Transacciones = {
             
             // Guardar cambios en Firestore
             db.collection("grupal_v4").doc("transacciones").update({ lista: lista });
+        }
+    },
+
+    /**
+     * Debug: Muestra el estado actual de todos los abonos y sus refId
+     * Ejecutar: Transacciones.debugAbonos()
+     */
+    debugAbonos() {
+        const lista = Principal.transaccionesGlobales;
+        console.log('=== DEBUG ABONOS ===');
+        console.log(`Total de transacciones: ${lista.length}`);
+        
+        const abonos = lista.filter(t => t.tipo === 'abono');
+        console.log(`\nTotal de abonos: ${abonos.length}`);
+        
+        abonos.forEach(abono => {
+            console.log(`\n📝 Abono: "${abono.concepto}"`);
+            console.log(`   ID: ${abono.id}`);
+            console.log(`   refId: ${abono.refId}`);
+            
+            if (abono.refId) {
+                const deuda = lista.find(d => d.id === abono.refId);
+                if (deuda) {
+                    console.log(`   ✓ Deuda encontrada: "${deuda.concepto}"`);
+                } else {
+                    console.log(`   ✗ DEUDA NO ENCONTRADA (refId inválido)`);
+                }
+            } else {
+                console.log(`   ⚠ Sin refId`);
+            }
+        });
+    },
+
+    /**
+     * Elimina todas las transacciones de tipo "anotacion" de la base de datos
+     * Ejecutar: Transacciones.eliminarAnotaciones()
+     */
+    eliminarAnotaciones() {
+        const lista = [...Principal.transaccionesGlobales];
+        const anotaciones = lista.filter(t => t.tipo === 'anotacion');
+        
+        console.log(`=== ELIMINANDO ANOTACIONES ===`);
+        console.log(`Total de anotaciones encontradas: ${anotaciones.length}`);
+        
+        if (anotaciones.length === 0) {
+            alert('No hay anotaciones para eliminar.');
+            return;
+        }
+
+        if (!confirm(`¿Eliminar ${anotaciones.length} anotaciones de la base de datos?\n\nEsto es PERMANENTE.`)) {
+            return;
+        }
+
+        // Crear nueva lista sin anotaciones
+        const nuevaLista = lista.filter(t => t.tipo !== 'anotacion');
+        
+        console.log(`Nueva lista: ${nuevaLista.length} transacciones (${lista.length - nuevaLista.length} eliminadas)`);
+
+        // Guardar en Firestore
+        db.collection("grupal_v4").doc("transacciones").update({ lista: nuevaLista })
+            .then(() => {
+                alert(`✓ ${anotaciones.length} anotaciones eliminadas correctamente.`);
+                window.location.reload();
+            })
+            .catch(err => {
+                alert(`✗ Error al eliminar: ${err.message}`);
+                console.error(err);
+            });
+    },
+
+    /**
+     * Limpiar y validar abonos
+     */
+    limpiarYValidarAbonos() {
+        const lista = [...Principal.transaccionesGlobales];
+        let corregidos = 0;
+        let eliminados = 0;
+
+        console.log('=== VALIDANDO Y LIMPIANDO ABONOS ===');
+        console.log('Total de transacciones:', lista.length);
+
+        // Paso 1: Validar todos los refId
+        lista.forEach((t, idx) => {
+            if (t.tipo === 'abono') {
+                console.log(`\n📝 Abono: "${t.concepto}"`);
+                console.log(`   refId actual: ${t.refId}`);
+                
+                // Verificar si refId es válido
+                if (!t.refId || t.refId === 'undefined' || t.refId === null || t.refId === '') {
+                    console.log(`   ⚠ refId vacío o undefined`);
+                    // Intentar encontrar la deuda por concepto
+                    const match = t.concepto.match(/Abono a:\s*(.+)$/);
+                    if (match) {
+                        const conceptoDeuda = match[1].trim();
+                        const deuda = lista.find(d => 
+                            d.concepto === conceptoDeuda && 
+                            (d.tipo === 'preste' || d.tipo === 'me_prestaron')
+                        );
+                        if (deuda) {
+                            lista[idx].refId = deuda.id;
+                            corregidos++;
+                            console.log(`   ✓ Asignado refId: ${deuda.id}`);
+                        }
+                    }
+                } else {
+                    // refId existe, verificar si apunta a una deuda real
+                    const deudaExiste = lista.find(d => d.id === t.refId);
+                    if (!deudaExiste) {
+                        console.log(`   ✗ refId ${t.refId} NO EXISTE en la lista`);
+                        // Buscar por concepto
+                        const match = t.concepto.match(/Abono a:\s*(.+)$/);
+                        if (match) {
+                            const conceptoDeuda = match[1].trim();
+                            const deuda = lista.find(d => 
+                                d.concepto === conceptoDeuda && 
+                                (d.tipo === 'preste' || d.tipo === 'me_prestaron')
+                            );
+                            if (deuda) {
+                                lista[idx].refId = deuda.id;
+                                corregidos++;
+                                console.log(`   ✓ Corregido a refId: ${deuda.id}`);
+                            } else {
+                                // Si no encuentra deuda, es un abono huérfano
+                                console.log(`   ✗ No hay deuda asociada para este abono`);
+                            }
+                        }
+                    } else {
+                        console.log(`   ✓ refId válido`);
+                    }
+                }
+            }
+        });
+
+        console.log('\n=== RESUMEN ===');
+        console.log(`Abonos corregidos: ${corregidos}`);
+
+        if (corregidos > 0) {
+            db.collection("grupal_v4").doc("transacciones").update({ lista: lista })
+                .then(() => {
+                    alert(`✓ Limpieza completada:\n${corregidos} abonos corregidos`);
+                    window.location.reload();
+                })
+                .catch(err => {
+                    alert(`✗ Error: ${err.message}`);
+                    console.error(err);
+                });
+        } else {
+            alert('✓ Todos los abonos ya tienen refID válido');
         }
     }
 };
