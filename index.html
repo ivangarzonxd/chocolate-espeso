@@ -35,13 +35,6 @@
          PANTALLA 1 - ACCESO: Selección de usuario
          ================================================================ -->
     <div id="pantalla-acceso" class="pantalla">
-      <!-- Header global de la aplicación -->
-      <div class="encabezado-global">
-        <h1 class="titulo-encabezado">LAS CUENTAS CLARAS</h1>
-        <p class="subtitulo-encabezado">y el chocolate espeso</p>
-        <div class="icono-marca">☕</div>
-      </div>
-
       <!-- Matriz de botones de usuarios (2x2) -->
       <div class="cuadricula-usuarios">
         <button
@@ -75,13 +68,6 @@
          PANTALLA 2 - PIN: Ingreso del código de acceso
          ================================================================ -->
     <div id="pantalla-pin" class="pantalla oculto">
-      <!-- Header global de la aplicación -->
-      <div class="encabezado-global">
-        <h1 class="titulo-encabezado">LAS CUENTAS CLARAS</h1>
-        <p class="subtitulo-encabezado">y el chocolate espeso</p>
-        <div class="icono-marca">☕</div>
-      </div>
-
       <!-- Título dinámico: "Hola [nombre]" o "Crea tu PIN" -->
       <h2 id="titulo-pin" class="texto-centro">PIN de Acceso</h2>
 
@@ -109,15 +95,6 @@
          PANTALLA 3 - PRINCIPAL: Dashboard con saldos y transacciones
          ================================================================ -->
     <div id="pantalla-principal" class="pantalla oculto">
-      <!-- Header global de la aplicación -->
-      <div class="titulo-dashboard">
-        <div class="logo-linea">
-          <span class="primer-titulo-dashboard">LAS CUENTAS CLARAS</span>
-          <span class="segundo-titulo-dashboard">y el chocolate espeso
-          <span class="icono-dashboard">☕</span></span>
-        </div>
-      </div>
-
       <!-- Bienvenida y botón de salida -->
       <div class="linea-usuario">
         <span class="bienvenida">Bienvenido, <span id="nombre-usuario-barra">Usuario</span></span>
@@ -260,6 +237,9 @@
       </div>
     </div>
 
+    <!-- Contenedor para notificaciones toast -->
+    <div id="contenedor-notificaciones"></div>
+
     <!-- ================================================================
          SCRIPTS - Cargar módulos de la aplicación en orden
          ================================================================ -->
@@ -273,5 +253,12 @@
     <script src="js/principal.js"></script>
     <!-- Gestión de transacciones y historial -->
     <script src="js/transacciones.js"></script>
+
+    <!-- Inicialización: Cargar headers reutilizables cuando el DOM esté listo -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Interfaz.cargarHeadersReutilizables();
+        });
+    </script>
   </body>
 </html>

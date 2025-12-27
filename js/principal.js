@@ -130,7 +130,6 @@ const Principal = {
                         <div class="nombre-cuenta">${nombre} ${alerta}</div>
                         <div class="saldo-cuenta" style="color:${color}">${texto}</div>
                     </div>
-                    <div class="boton-historial-cuenta" onclick="Transacciones.verHistorialSocio('${nombre}')">📖</div>
                 </div>`;
         }
 

@@ -3,16 +3,25 @@
    ==================================================================== */
 
 #pantalla-pin {
-  padding: 12px 20px;               /* Espacio interno reducido */
-  justify-content: flex-start;      /* Contenido alineado arriba */
-  overflow-y: auto;                 /* Permite desplazamiento vertical */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;                 /* Sin scroll en pantalla completa */
+}
+
+#pantalla-pin .encabezado-global {
+  flex-shrink: 0;                   /* No se reduce */
+  position: sticky;                 /* Se queda fijo en la parte superior */
+  top: 0;
+  z-index: 100;
+  background: var(--bg-negro);      /* Fondo negro para que no se transparente */
 }
 
 /* --- Título de Pantalla PIN --- */
 #titulo-pin {
-  margin-top: 8px;                  /* Espacio arriba */
+  margin-top: 20px;                 /* Espacio arriba */
   margin-bottom: 8px;               /* Espacio abajo */
   font-size: 1.3rem;                /* Texto bastante grande */
+  padding: 0 20px;                  /* Padding horizontal */
 }
 
 /* --- Visor de PIN --- */
@@ -24,6 +33,7 @@
   letter-spacing: 12px;             /* Gran espaciado entre dígitos */
   margin-bottom: 12px;              /* Espacio abajo */
   margin-top: 10px;                 /* Espacio arriba */
+  padding: 0 20px;                  /* Padding horizontal */
 }
 
 /* --- Teclado Numérico (Numpad) --- */
@@ -33,6 +43,7 @@
   gap: 12px;                        /* Espacio entre teclas */
   max-width: 280px;                 /* Ancho máximo */
   margin: 0 auto;                   /* Centra el teclado */
+  padding: 0 20px;                  /* Padding horizontal */
 }
 
 .tecla-numero {

@@ -252,11 +252,24 @@ const Transacciones = {
         db.collection("grupal_v4").doc("transacciones").update({
             lista: firebase.firestore.FieldValue.arrayUnion(nuevoMovimiento)
         }).then(() => {
-            Interfaz.cerrarModal('modal-transaccion');
-            document.getElementById("input-monto").value = "";
-            document.getElementById("input-concepto").value = "";
-            document.getElementById("abono-opciones").classList.add('oculto');
-            document.getElementById("abono-especifico-contenedor").classList.add('oculto');
+            // Aislar el reseteo de UI para que un error en el DOM no dispare el catch
+            try {
+                Interfaz.cerrarModal('modal-transaccion');
+                document.getElementById("input-monto").value = "";
+                document.getElementById("input-concepto").value = "";
+                const abonoOpciones = document.getElementById("abono-opciones");
+                const abonoEspecifico = document.getElementById("abono-especifico-contenedor");
+                if (abonoOpciones) abonoOpciones.classList.add('oculto');
+                if (abonoEspecifico) abonoEspecifico.classList.add('oculto');
+            } catch (uiError) {
+                console.warn('UI reset error:', uiError);
+            }
+
+            // Mostrar confirmación
+            Interfaz.mostrarNotificacion(`✅ Movimiento guardado: €${monto} - ${concepto}`, 'exito');
+        }).catch(error => {
+            Interfaz.mostrarNotificacion('❌ Error al guardar el movimiento', 'error');
+            console.error('Error:', error);
         });
     },
 
@@ -512,6 +525,7 @@ const Transacciones = {
                         <span class="descripcion-fila">${conceptoFinal}</span>
                     </div>
                     <div class="monto-fila" style="color:${color}">${t.monto}€</div>
+                    <div class="zona-eliminar-fila" style="font-size: 1.3rem; cursor: pointer; padding: 5px; min-width: 30px; text-align: center;">🗑️</div>
                 </div>`;
         };
 
@@ -560,6 +574,7 @@ const Transacciones = {
         
         // Marcar como pendiente de borrado, indicando quién lo solicitó
         this.modificarEstado(id, "borrar_pendiente", Autenticacion.usuarioActual);
+        Interfaz.mostrarNotificacion('📤 Solicitud de borrado enviada al socio', 'info');
     },
 
     /**
@@ -576,7 +591,12 @@ const Transacciones = {
             const nuevaLista = Principal.transaccionesGlobales.filter(t => t.id !== id);
             
             // Guardar lista actualizada en Firestore
-            db.collection("grupal_v4").doc("transacciones").update({ lista: nuevaLista });
+            db.collection("grupal_v4").doc("transacciones").update({ lista: nuevaLista }).then(() => {
+                Interfaz.mostrarNotificacion('✅ Movimiento eliminado correctamente', 'exito');
+            }).catch(error => {
+                Interfaz.mostrarNotificacion('❌ Error al eliminar el movimiento', 'error');
+                console.error('Error:', error);
+            });
         }
     },
 

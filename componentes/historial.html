@@ -1,0 +1,27 @@
+<!-- ================================================================
+     HISTORIAL COMPLETO: Todas las transacciones de un socio
+     ================================================================ -->
+<div id="pantalla-historial" class="pantalla oculto">
+  <div class="contenedor-historial-pantalla">
+    <!-- Nombre del socio -->
+    <h2 id="nombre-socio-historial-pantalla" class="texto-centro">Historial</h2>
+
+    <!-- Encabezados de columnas -->
+    <div class="encabezado-historial">
+      <div class="columna-fecha">Fecha / Concepto</div>
+      <div class="columna-monto">Monto</div>
+    </div>
+
+    <!-- Lista de transacciones -->
+    <div id="contenedor-historial-pantalla" class="lista-historial"></div>
+
+    <!-- Barra inferior con acciones -->
+    <div class="barra-inferior-historial">
+      <div id="control-eliminar-pie" class="control-eliminar-pie" onclick="Transacciones.toggleModoEliminarHistorial()">
+        <span class="icono-eliminar">🗑️</span>
+        <span class="texto-eliminar">Eliminar un movimiento</span>
+      </div>
+      <button class="boton boton-transparente boton-volver-historial" onclick="Interfaz.cambiarPantalla('pantalla-transaccion')">Volver</button>
+    </div>
+  </div>
+</div>

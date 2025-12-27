@@ -2,6 +2,23 @@
    SECCIÓN 6: PANTALLA PRINCIPAL - Dashboard
    ==================================================================== */
 
+/* --- Hacer que pantallas con header fijo tengan scroll solo en contenido --- */
+#pantalla-principal,
+#pantalla-transaccion {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#pantalla-principal .encabezado-global,
+#pantalla-transaccion .encabezado-global {
+  flex-shrink: 0;                   /* No se reduce */
+  position: sticky;                 /* Se queda fijo en la parte superior */
+  top: 0;
+  z-index: 100;
+  background: var(--bg-negro);      /* Fondo negro para que no se transparente */
+}
+
 /* --- Encabezado del Dashboard --- */
 .titulo-dashboard {
   display: flex;                    /* Usa flexbox */
@@ -63,8 +80,29 @@
   display: flex;              /* Coloca texto y botón en una sola línea */
   align-items: center;        /* Centra verticalmente ambos elementos */
   padding: 10px 0;            /* Espacio vertical interno */
-  font-size: 2em;        /* Tamaño de fuente medio */
+  font-size: 2em;             /* Tamaño de fuente medio */
+  flex-shrink: 0;             /* No se reduce */
   /* No usamos justify-content: space-between para tener más control con margin-left: auto */
+}
+
+/* --- Contenedor scrolleable para el resto del dashboard --- */
+#pantalla-principal > .tarjeta-saldo-total,
+#pantalla-principal > .contenedor-cuentas,
+#pantalla-principal > .boton-nuevo-movimiento {
+  flex-shrink: 0;
+}
+
+#pantalla-principal > .contenedor-cuentas {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* --- Contenedor scrolleable para pantalla de transacciones --- */
+#pantalla-transaccion > .contenedor-transaccion-completo {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .bienvenida {
@@ -149,7 +187,7 @@
   margin-bottom: 10px;          /* Espacio entre filas */
   border-radius: var(--borde-radio-medio); /* Esquinas redondeadas (12px) */
   display: flex;                /* Usa flexbox para organizar elementos en fila */
-  height: 65px;                 /* Altura fija de cada fila */
+  height: 60px;                 /* Altura compacta para ver más socios */
   overflow: hidden;             /* Oculta lo que sobresale */
   border-left: 4px solid;       /* Línea colorida a la izquierda (se asigna por JavaScript) */
   transition: transform 0.2s;   /* Animación suave cuando se presiona */
@@ -159,25 +197,33 @@
   transform: scale(0.98);       /* Se encoge un poco cuando se presiona */
 }
 
-/* --- Contenido Principal de Cuenta --- */
+/* --- Contenido Principal de Cuenta (Estilo App Bancaria) --- */
 .contenido-cuenta {
-  flex: 1;              /* Ocupa el espacio disponible entre borde y botón historial */
-  padding: 15px;        /* Espacio interno alrededor del texto */
-  display: flex;        /* Usa flexbox para organizar los textos */
-  flex-direction: column; /* Los elementos se apilan verticalmente */
-  justify-content: center; /* Centra verticalmente el contenido */
-  cursor: pointer;      /* Cambia el cursor a manita indicando que es clickeable */
+  flex: 1;                      /* Ocupa todo el espacio disponible */
+  padding: 12px 24px;           /* Más padding horizontal para que no estén en los extremos */
+  display: flex;                /* Usa flexbox horizontal */
+  flex-direction: row;          /* Elementos en línea horizontal */
+  justify-content: center;      /* Centra el contenido */
+  align-items: center;          /* Centra verticalmente */
+  cursor: pointer;              /* Cursor de manita indicando que es clickeable */
+  gap: 60px;                    /* Espacio amplio entre nombre y saldo */
 }
 
 .nombre-cuenta {
-  font-size: var(--tamaño-fuente-normal); /* Tamaño de texto normal (1rem) */
-  font-weight: bold;    /* Texto en negrita para que destaque */
-  margin-bottom: 3px;   /* Poco espacio entre nombre y saldo */
+  font-size: 1rem;              /* Tamaño de texto normal */
+  font-weight: 600;             /* Semi-negrita para que destaque */
+  color: var(--txt-blanco);     /* Texto blanco */
+  flex: 1;                      /* Ocupa el espacio disponible */
+  white-space: nowrap;          /* No permite salto de línea */
+  overflow: hidden;             /* Oculta texto que sobresale */
+  text-overflow: ellipsis;      /* Muestra ... si el nombre es muy largo */
 }
 
 .saldo-cuenta {
-  font-size: 0.9rem;    /* Texto más pequeño que lo normal */
-  color: var(--txt-gris); /* Color gris para texto secundario */
+  font-size: 1.1rem;            /* Saldo más grande y destacado */
+  font-weight: bold;            /* Negrita para el saldo */
+  white-space: nowrap;          /* No permite salto de línea */
+  min-width: fit-content;       /* Ocupa solo lo necesario */
 }
 
 /* --- Botón de Historial --- */
@@ -321,6 +367,8 @@
   height: 100%;                     /* Ocupa toda la altura */
   padding: 20px;                    /* Espacio interno reducido */
   padding-bottom: 0;                /* Sin espacio extra abajo */
+  position: relative;               /* Para elementos posicionados dentro */
+  min-height: 0;                    /* Permite que hijos con overflow gestionen el scroll */
 }
 
 .contenedor-historial-pantalla > h2 {
@@ -338,8 +386,15 @@
 
 .contenedor-historial-pantalla > .lista-historial {
   flex: 1;                          /* Ocupa el espacio disponible */
-  overflow-y: auto;                 /* Permite desplazamiento */
+  overflow-y: auto;                 /* Permite desplazamiento solo dentro de la lista */
   margin-bottom: 0;                 /* Sin margen inferior, llega hasta la barra */
+  max-height: calc(100vh - 220px);  /* Altura controlada para que se vean los botones de abajo */
+  min-height: 0;                    /* Evita que crezca más que el contenedor */
+}
+
+/* La pantalla completa de historial no debe scrollear; solo la lista interna */
+#pantalla-historial {
+  overflow: hidden;
 }
 
 /* Barra inferior fija dentro del historial */
@@ -386,4 +441,13 @@
   text-align: center;               /* Centrado del texto */
   height: auto;                     /* Override altura estándar */
   margin-left: auto;                /* Alinea a la derecha */
+}
+/* --- Zona de eliminar en filas de historial --- */
+.zona-eliminar-fila {
+  display: none;                    /* Oculta por defecto */
+}
+
+/* Mostrar zona de eliminar cuando el modo está activo */
+.modo-eliminar-activo .zona-eliminar-fila {
+  display: block !important;
 }

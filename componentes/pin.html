@@ -1,0 +1,26 @@
+<!-- ================================================================
+     PANTALLA 2 - PIN: Ingreso del código de acceso
+     ================================================================ -->
+<div id="pantalla-pin" class="pantalla oculto">
+  <!-- Título dinámico: "Hola [nombre]" o "Crea tu PIN" -->
+  <h2 id="titulo-pin" class="texto-centro">PIN de Acceso</h2>
+
+  <!-- Visor de asteriscos del PIN ingresado -->
+  <div class="visor-pin" id="visor-pin"></div>
+
+  <!-- Teclado numérico 3x4 (similar a calculadora) -->
+  <div class="teclado-numerico">
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(1)">1</button>
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(2)">2</button>
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(3)">3</button>
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(4)">4</button>
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(5)">5</button>
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(6)">6</button>
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(7)">7</button>
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(8)">8</button>
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(9)">9</button>
+    <button class="tecla-numero tecla-cancelar" onclick="Autenticacion.limpiarPin()">C</button>
+    <button class="tecla-numero" onclick="Autenticacion.escribirPin(0)">0</button>
+    <button class="tecla-numero tecla-aceptar" onclick="Autenticacion.verificarPin()">OK</button>
+  </div>
+</div>

@@ -76,5 +76,56 @@ const Interfaz = {
                 lista.appendChild(btn);
             }
         });
+    },
+
+    /**
+     * Carga y inyecta el header reutilizable en las pantallas que lo necesitan
+     * Se ejecuta una sola vez al cargar la página
+     */
+    async cargarHeadersReutilizables() {
+        try {
+            const response = await fetch('componentes/header.html');
+            const headerHTML = await response.text();
+            
+            // Inyectar header en pantallas que lo necesitan
+            const pantallasConHeader = ['pantalla-acceso', 'pantalla-pin', 'pantalla-principal', 'pantalla-transaccion'];
+            
+            pantallasConHeader.forEach(idPantalla => {
+                const pantalla = document.getElementById(idPantalla);
+                if (pantalla) {
+                    // Insertar header al inicio de cada pantalla
+                    pantalla.insertAdjacentHTML('afterbegin', headerHTML);
+                }
+            });
+        } catch (error) {
+            console.error('Error al cargar headers reutilizables:', error);
+        }
+    },
+
+    /**
+     * Muestra notificaciones tipo toast en la pantalla
+     * Se posiciona en el centro superior y se oculta automáticamente
+     * 
+     * @param {string} mensaje - Texto a mostrar en la notificación
+     * @param {string} tipo - 'exito' (verde) o 'error' (rojo)
+     * @param {number} duracion - Milisegundos antes de ocultarse (default 3000)
+     */
+    mostrarNotificacion(mensaje, tipo = 'exito', duracion = 3000) {
+        const contenedor = document.getElementById('contenedor-notificaciones');
+        
+        const notificacion = document.createElement('div');
+        notificacion.className = `notificacion notificacion-${tipo}`;
+        notificacion.textContent = mensaje;
+        
+        contenedor.appendChild(notificacion);
+        
+        // Animar entrada
+        setTimeout(() => notificacion.classList.add('visible'), 10);
+        
+        // Auto-remover después del tiempo especificado
+        setTimeout(() => {
+            notificacion.classList.remove('visible');
+            setTimeout(() => notificacion.remove(), 300);
+        }, duracion);
     }
 };
