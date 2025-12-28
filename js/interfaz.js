@@ -70,7 +70,7 @@ const Interfaz = {
         USUARIOS.forEach(usuario => {
             if (usuario !== Autenticacion.usuarioActual) {
                 const btn = document.createElement('button');
-                btn.className = 'boton-usuario';
+                btn.className = 'boton boton-amarillo';
                 btn.textContent = usuario;
                 btn.onclick = () => Transacciones.iniciarConSocio(usuario);
                 lista.appendChild(btn);

@@ -6,40 +6,37 @@
     <!-- Nombre del socio seleccionado -->
     <h2 id="titulo-socio-transaccion" class="texto-centro">Socio</h2>
 
-    <!-- Botones para seleccionar tipo de transacción -->
-    <div class="cuadricula-2-columnas separacion-md">
-      <button class="boton boton-verde-suave" onclick="Transacciones.prepararTipo('preste')">Le presté</button>
-      <button class="boton boton-rojo-suave" onclick="Transacciones.prepararTipo('me_prestaron')">Me prestó</button>
+    <!-- Botones para seleccionar tipo de transacción (pantalla compacta, ancho completo) -->
+    <div id="seccion-tipos" class="pila-botones">
+      <button class="boton boton-verde" onclick="Transacciones.prepararTipo('preste')">Le presté</button>
+      <button class="boton boton-rojo" onclick="Transacciones.prepararTipo('me_prestaron')">Me prestó</button>
+      <button id="boton-abonar" class="boton boton-azul" onclick="Transacciones.prepararTipo('abono')">Abonar / Pagar</button>
     </div>
-    <button class="boton boton-azul" style="margin-top: 10px" onclick="Transacciones.prepararTipo('abono')">Abonar / Pagar</button>
 
     <!-- Opciones específicas para ABONO -->
-    <div id="abono-opciones" class="oculto margen-superior">
+    <div id="abono-opciones" class="oculto margen-superior pila-botones">
       <button class="boton boton-blanco" onclick="Transacciones.seleccionarDestinoAbono('general')">Abonar al general</button>
-      <button class="boton boton-blanco" style="margin-top: 10px;" onclick="Transacciones.seleccionarDestinoAbono('especifica')">Abonar a deuda específica</button>
+      <button class="boton boton-blanco" onclick="Transacciones.seleccionarDestinoAbono('especifica')">Abonar a deuda específica</button>
       <div id="abono-especifico-contenedor" class="oculto margen-superior">
         <select id="selector-deuda-especifica" class="campo-entrada"></select>
       </div>
     </div>
 
     <!-- Formulario de monto y concepto -->
-    <div id="seccion-formulario" class="oculto margen-superior">
+    <div id="seccion-formulario" class="oculto margen-superior pila-botones">
       <input type="number" id="input-monto" class="campo-entrada" placeholder="Monto €" inputmode="decimal" />
-      <input type="text" id="input-concepto" class="campo-entrada" placeholder="Concepto (opcional)" style="margin-top: 10px;" />
-      <button class="boton boton-naranja" style="margin-top: 15px;" onclick="Transacciones.guardarMovimiento()">GUARDAR DATOS</button>
+      <input type="text" id="input-concepto" class="campo-entrada" placeholder="Concepto (opcional)" />
+      <button class="boton boton-naranja" onclick="Transacciones.guardarMovimiento()">GUARDAR DATOS</button>
     </div>
 
-    <!-- Divisor visual -->
-    <div style="margin: 25px 0; border-top: 1px solid #444;"></div>
-
-    <!-- Botón para mostrar historial en pantalla completa -->
-    <button class="boton boton-transparente" onclick="Transacciones.abrirHistorialPantalla()" style="margin-bottom: 15px;">
-      📖 Ver Historial
-    </button>
-
-    <!-- Botón para volver -->
-    <button class="boton boton-transparente" onclick="Interfaz.cambiarPantalla('pantalla-principal')">
-      Volver
-    </button>
+    <div class="acciones-transaccion-inferior">
+      <div class="divisor-transaccion"></div>
+      <button class="boton boton-gris" onclick="Transacciones.abrirHistorialPantalla()">
+        📖 Ver Historial
+      </button>
+      <button class="boton boton-gris" onclick="Transacciones.cancelarTransaccion()">
+        Volver
+      </button>
+    </div>
   </div>
 </div>

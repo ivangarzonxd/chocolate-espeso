@@ -9,14 +9,8 @@
     />
     <title>Cuentas Claras v5</title>
 
-    <!-- Estilos CSS -->
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/componentes.css" />
-    <link rel="stylesheet" href="css/login.css" />
-    <link rel="stylesheet" href="css/pin.css" />
-    <link rel="stylesheet" href="css/dashboard.css" />
-    <link rel="stylesheet" href="css/modales.css" />
+    <!-- Estilos CSS unificados -->
+    <link rel="stylesheet" href="./estilos.css" />
 
     <!-- Firebase - para autenticación y base de datos en tiempo real -->
     <!-- compat.js permite usar sintaxis antigua compatible -->
@@ -98,7 +92,7 @@
       <!-- Bienvenida y botón de salida -->
       <div class="linea-usuario">
         <span class="bienvenida">Bienvenido, <span id="nombre-usuario-barra">Usuario</span></span>
-        <button class="boton-dashboard salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
+        <button class="boton boton-dashboard salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
       </div>
 
       <!-- Tarjeta principal con saldo total neto del usuario -->
@@ -112,9 +106,7 @@
       <div class="contenedor-cuentas" id="lista-cuentas-contenedor"></div>
 
       <!-- Botón flotante para crear nuevo movimiento -->
-      <div class="boton-nuevo-movimiento">
-        <button class="boton-dashboard inferior" onclick="Interfaz.abrirModal('modal-socios')"> + NUEVO MOVIMIENTO</button>
-      </div>
+      <button class="boton nuevo-movimiento" onclick="Interfaz.abrirModal('modal-socios')">+ NUEVO MOVIMIENTO</button>
     </div>
 
     <!-- ================================================================
@@ -125,7 +117,7 @@
         <h3 class="texto-centro">¿Con quién?</h3>
         <!-- Lista generada dinámicamente con los otros usuarios -->
         <div id="lista-socios-disponibles" class="flexible-columna separacion-md"></div>
-        <button class="boton boton-transparente" onclick="Interfaz.cerrarModal('modal-socios')">Cancelar</button>
+        <button class="boton" onclick="Interfaz.cerrarModal('modal-socios')">Cancelar</button>
       </div>
     </div>
 
@@ -137,59 +129,37 @@
         <!-- Nombre del socio seleccionado -->
         <h2 id="titulo-socio-transaccion" class="texto-centro">Socio</h2>
 
-        <!-- Botones para seleccionar tipo de transacción -->
-        <div class="cuadricula-2-columnas separacion-md">
-          <button class="boton boton-verde-suave" onclick="Transacciones.prepararTipo('preste')">Le presté</button>
-          <button class="boton boton-rojo-suave" onclick="Transacciones.prepararTipo('me_prestaron')">Me prestó</button>
+        <!-- Botones para seleccionar tipo de transacción (ancho completo, pila) -->
+        <div id="seccion-tipos" class="pila-botones">
+          <button class="boton boton-verde" onclick="Transacciones.prepararTipo('preste')">Le presté</button>
+          <button class="boton boton-rojo" onclick="Transacciones.prepararTipo('me_prestaron')">Me prestó</button>
+          <button id="boton-abonar" class="boton boton-azul" onclick="Transacciones.prepararTipo('abono')">Abonar / Pagar</button>
         </div>
-        <button class="boton boton-azul" style="margin-top: 10px" onclick="Transacciones.prepararTipo('abono')">Abonar / Pagar</button>
 
-        <!-- Formulario: monto, concepto y guardar (se muestra después de seleccionar tipo) -->
         <!-- Opciones específicas para ABONO -->
-        <div id="abono-opciones" class="oculto margen-superior">
+        <div id="abono-opciones" class="oculto margen-superior pila-botones">
           <button class="boton boton-blanco" onclick="Transacciones.seleccionarDestinoAbono('general')">Abonar al general</button>
-          <button class="boton boton-blanco" style="margin-top: 10px;" onclick="Transacciones.seleccionarDestinoAbono('especifica')">Abonar a deuda específica</button>
-          <!-- Selector de deuda específica (se muestra solo si corresponde) -->
+          <button class="boton boton-blanco" onclick="Transacciones.seleccionarDestinoAbono('especifica')">Abonar a deuda específica</button>
           <div id="abono-especifico-contenedor" class="oculto margen-superior">
             <select id="selector-deuda-especifica" class="campo-entrada"></select>
           </div>
         </div>
 
-        <div id="seccion-formulario" class="oculto margen-superior">
-          <input
-            type="number"
-            id="input-monto"
-            class="campo-entrada"
-            placeholder="Monto €"
-          />
-          <input
-            type="text"
-            id="input-concepto"
-            class="campo-entrada"
-            placeholder="Concepto"
-          />
-          <button
-            class="boton boton-naranja"
-            onclick="Transacciones.guardarMovimiento()"
-          >
-            GUARDAR DATOS
-          </button>
+        <div id="seccion-formulario" class="oculto margen-superior pila-botones">
+          <input type="number" id="input-monto" class="campo-entrada" placeholder="Monto €" inputmode="decimal" />
+          <input type="text" id="input-concepto" class="campo-entrada" placeholder="Concepto (opcional)" />
+          <button class="boton boton-naranja" onclick="Transacciones.guardarMovimiento()">GUARDAR DATOS</button>
         </div>
 
-        <!-- Divisor visual -->
-        <div style="margin: 25px 0; border-top: 1px solid #444;"></div>
-
-        <!-- Botón para mostrar historial en pantalla completa -->
-        <button class="boton boton-transparente" onclick="Transacciones.abrirHistorialPantalla()" style="margin-bottom: 15px;">
-          📖 Ver Historial
-        </button>
-
-        <button
-          class="boton boton-transparente"
-          onclick="Interfaz.cambiarPantalla('pantalla-principal')"
-        >
-          Volver
-        </button>
+        <div class="acciones-transaccion-inferior">
+          <div class="divisor-transaccion"></div>
+          <button class="boton boton-gris" onclick="Transacciones.abrirHistorialPantalla()">
+            📖 Ver Historial
+          </button>
+          <button class="boton boton-gris" onclick="Transacciones.cancelarTransaccion()">
+            Volver
+          </button>
+        </div>
       </div>
     </div>
 
@@ -216,7 +186,7 @@
             <span class="icono-eliminar">🗑️</span>
             <span class="texto-eliminar">Eliminar un movimiento</span>
           </div>
-          <button class="boton boton-transparente boton-volver-historial" onclick="Interfaz.cambiarPantalla('pantalla-transaccion')">Volver</button>
+          <button class="boton boton-gris boton-volver-historial" onclick="Interfaz.cambiarPantalla('pantalla-transaccion')">Volver</button>
         </div>
       </div>
     </div>

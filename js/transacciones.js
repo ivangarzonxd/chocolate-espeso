@@ -60,11 +60,18 @@ const Transacciones = {
         // Actualizar título con el nombre del socio
         document.getElementById("titulo-socio-transaccion").innerText = nombre;
         
-        // Ocultar formulario hasta que se seleccione tipo de transacción
-        document.getElementById("seccion-formulario").classList.add("oculto");
-        
+        // Resetear UI y mostrar selección de tipos
+        this._resetUITransaccion();
         // Cambiar a la pantalla de transacción (no modal, sino pantalla completa)
         Interfaz.cambiarPantalla('pantalla-transaccion');
+    },
+
+    /**
+     * Cancela y vuelve a la pantalla principal, asegurando reset de UI
+     */
+    cancelarTransaccion() {
+        this._resetUITransaccion();
+        Interfaz.cambiarPantalla('pantalla-principal');
     },
 
     /**
@@ -84,7 +91,11 @@ const Transacciones = {
         const contenedorEspecifico = document.getElementById("abono-especifico-contenedor");
         const form = document.getElementById("seccion-formulario");
         const concepto = document.getElementById("input-concepto");
-        const botonAbonar = document.querySelector("button[onclick=\"Transacciones.prepararTipo('abono')\"]");
+        const botonAbonar = document.getElementById("boton-abonar");
+        const seccionTipos = document.getElementById("seccion-tipos");
+
+        // Ocultar selección de tipos al elegir uno
+        if (seccionTipos) seccionTipos.classList.add('oculto');
 
         if (tipo === 'abono') {
             this.abonoDestino = null;
@@ -92,7 +103,7 @@ const Transacciones = {
             // Mostrar opciones de abono y ocultar formulario hasta elegir destino
             opcionesAbono.classList.remove('oculto');
             // Ocultar el botón "Abonar" para que en su lugar estén los dos botones
-            if (botonAbonar) botonAbonar.style.display = 'none';
+            if (botonAbonar) botonAbonar.classList.add('oculto');
             form.classList.add('oculto');
             contenedorEspecifico.classList.add('oculto');
             concepto.value = "";
@@ -100,7 +111,7 @@ const Transacciones = {
         } else {
             // Para otros tipos, mostrar formulario normal
             // Mostrar botón "Abonar" nuevamente si se selecciona otro tipo
-            if (botonAbonar) botonAbonar.style.display = '';
+            if (botonAbonar) botonAbonar.classList.remove('oculto');
             opcionesAbono.classList.add('oculto');
             contenedorEspecifico.classList.add('oculto');
             form.classList.remove('oculto');
@@ -113,6 +124,32 @@ const Transacciones = {
             this.deudaRefId = null;
             document.getElementById("input-monto").focus();
         }
+    },
+
+    /**
+     * Restaura el estado visual de la pantalla de transacción
+     */
+    _resetUITransaccion() {
+        const seccionTipos = document.getElementById('seccion-tipos');
+        const opcionesAbono = document.getElementById('abono-opciones');
+        const contenedorEspecifico = document.getElementById('abono-especifico-contenedor');
+        const form = document.getElementById('seccion-formulario');
+        const concepto = document.getElementById('input-concepto');
+        const botonAbonar = document.getElementById('boton-abonar');
+
+        if (seccionTipos) seccionTipos.classList.remove('oculto');
+        if (opcionesAbono) opcionesAbono.classList.add('oculto');
+        if (contenedorEspecifico) contenedorEspecifico.classList.add('oculto');
+        if (form) form.classList.add('oculto');
+        if (botonAbonar) botonAbonar.classList.remove('oculto');
+        if (concepto) {
+            concepto.value = "";
+            concepto.placeholder = "Concepto";
+            concepto.disabled = false;
+        }
+        this.abonoDestino = null;
+        this.deudaRefId = null;
+        this.tipoSeleccionado = null;
     },
 
     /**
@@ -525,7 +562,7 @@ const Transacciones = {
                         <span class="descripcion-fila">${conceptoFinal}</span>
                     </div>
                     <div class="monto-fila" style="color:${color}">${t.monto}€</div>
-                    <div class="zona-eliminar-fila" style="font-size: 1.3rem; cursor: pointer; padding: 5px; min-width: 30px; text-align: center;">🗑️</div>
+                    <div class="zona-eliminar-fila">🗑️</div>
                 </div>`;
         };
 

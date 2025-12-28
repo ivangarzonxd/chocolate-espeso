@@ -5,7 +5,7 @@
   <!-- Bienvenida y botón de salida -->
   <div class="linea-usuario">
     <span class="bienvenida">Bienvenido, <span id="nombre-usuario-barra">Usuario</span></span>
-    <button class="boton-dashboard salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
+    <button class="boton salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
   </div>
 
   <!-- Tarjeta principal con saldo total neto del usuario -->
@@ -14,11 +14,14 @@
     <h2 class="valor-saldo" id="valor-saldo-global">0€</h2>
   </div>
 
-  <!-- Lista desplazable de cuentas con socios -->
-  <div class="contenedor-cuentas" id="lista-cuentas-contenedor"></div>
+  <!-- Lista desplazable de cuentas con socios (generada dinámicamente por JavaScript) -->
+  <div class="contenedor-cuentas" id="lista-cuentas-contenedor">
+    <!-- Estructura de botón de socio: clase .boton es base, .boton-socio-js agregada dinámicamente por JS -->
+    <!-- Las clases de color (boton-socio-positivo/negativo) también las agrega JS según el saldo -->
+  </div>
 
   <!-- Botón flotante para crear nuevo movimiento -->
   <div class="boton-nuevo-movimiento">
-    <button class="boton-dashboard inferior" onclick="Interfaz.abrirModal('modal-socios')">+ NUEVO MOVIMIENTO</button>
+    <button class="boton nuevo-movimiento" onclick="Interfaz.abrirModal('modal-socios')">+ NUEVO MOVIMIENTO</button>
   </div>
 </div>
