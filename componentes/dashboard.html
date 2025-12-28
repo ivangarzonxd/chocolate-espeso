@@ -2,10 +2,9 @@
      DASHBOARD PRINCIPAL: Saldos y cuentas con socios
      ================================================================ -->
 <div id="pantalla-principal" class="pantalla oculto">
-  <!-- Bienvenida y botón de salida -->
+  <!-- Bienvenida -->
   <div class="linea-usuario">
     <span class="bienvenida">Bienvenido, <span id="nombre-usuario-barra">Usuario</span></span>
-    <button class="boton salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
   </div>
 
   <!-- Tarjeta principal con saldo total neto del usuario -->
@@ -20,8 +19,9 @@
     <!-- Las clases de color (boton-socio-positivo/negativo) también las agrega JS según el saldo -->
   </div>
 
-  <!-- Botón flotante para crear nuevo movimiento -->
-  <div class="boton-nuevo-movimiento">
-    <button class="boton nuevo-movimiento" onclick="Interfaz.abrirModal('modal-socios')">+ NUEVO MOVIMIENTO</button>
+  <!-- Botones inferiores: NUEVO MOVIMIENTO izquierda, SALIR derecha -->
+  <div class="barra-botones-inferior">
+    <button class="boton boton-nuevo-movimiento-inline" onclick="Interfaz.abrirModal('modal-socios')">Nuevo Movimiento</button>
+    <button class="boton salir" onclick="Autenticacion.cerrarSesion()">Salir</button>
   </div>
 </div>

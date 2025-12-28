@@ -260,13 +260,38 @@ html { height: 100%; }
 .salir {
   width: auto;
   padding: 0 15px;
-  margin-left: auto;
   margin-bottom: 0;
 }
 
 .nuevo-movimiento {
   margin-top: 20px;
   width: 100%;
+}
+
+/* Barra inferior con botones NUEVO MOVIMIENTO y SALIR */
+.barra-botones-inferior {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+  padding-top: 12px;
+  border-top: 1px solid #333;
+}
+
+.boton-nuevo-movimiento-inline {
+  flex: 0 0 auto;
+  margin-bottom: 0;
+  padding: 0 20px;
+  width: auto;
+  white-space: nowrap;
+}
+
+.barra-botones-inferior .salir {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 0 15px;
+  margin-bottom: 0;
+  margin-left: auto;
+  white-space: nowrap;
 }
 
 .boton-historial-cuenta {
@@ -383,8 +408,10 @@ html { height: 100%; }
 }
 .icono-marca {
   font-size: 28px;
-  margin-left: 4px;
+  margin-left: 6px;
   opacity: 0.8;
+  display: inline-block;
+  transform: translateY(2px);
 }
 
 /* Media query para pantallas grandes (PC/Tablet) */
@@ -410,7 +437,8 @@ html { height: 100%; }
   
   .icono-marca {
     font-size: 38px;
-    margin-left: 0;
+    margin-left: 12px;
+    transform: translateY(0);
   }
 }
 
@@ -672,7 +700,7 @@ html { height: 100%; }
   flex: 1;
   overflow-y: auto;
   margin-bottom: 0;
-  max-height: calc(100vh - 220px);
+  max-height: calc(100vh - 260px);
   min-height: 0;
 }
 #pantalla-historial {
