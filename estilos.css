@@ -334,9 +334,8 @@ body {
 
 .encabezado-global {
   text-align: center;
-  margin-bottom: 15px;
-  margin-top: 5px;
-  padding-bottom: 8px;
+  margin: 0 0 15px 0;
+  padding: 12px 0 12px 0;
   border-bottom: 1px solid #333;
 }
 .titulo-encabezado {
@@ -350,9 +349,9 @@ body {
 }
 .subtitulo-encabezado {
   font-family: var(--fuente-subtitulo);
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: var(--txt-subtitulo);
-  margin: -5px 0 0 0;
+  margin: 4px 0 0 0;
 }
 .icono-marca {
   font-size: 28px;
@@ -377,8 +376,8 @@ body {
   }
   
   .subtitulo-encabezado {
-    font-size: 2.4rem;
-    margin: 0;
+    font-size: 2.2rem;
+    margin: 4px 0 0 0;
   }
   
   .icono-marca {
