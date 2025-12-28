@@ -72,12 +72,37 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+/* Viewport robusto: dvh/svh y fallback para iOS antiguo */
+@supports (height: 100dvh) {
+  body { height: 100dvh; }
+}
+@supports (height: 100svh) {
+  body { height: 100svh; }
+}
+html { height: 100%; }
+@supports (-webkit-touch-callout: none) {
+  html, body { height: -webkit-fill-available; }
+}
+@supports (height: 100dvh) {
+  body { height: 100dvh; }
+}
 
 .oculto {
   display: none !important;
 }
 .pantalla {
   padding: var(--padding-pantalla);
+  /* Ajuste de safe area para iOS */
+  padding-bottom: calc(30px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+@supports (min-height: 100dvh) {
+  .pantalla { min-height: 100dvh; }
+}
+@supports (min-height: 100svh) {
+  .pantalla { min-height: 100svh; }
 }
 .texto-centro {
   text-align: center;
@@ -105,6 +130,7 @@ body {
   gap: 12px;
   background: var(--bg-negro);
   padding-top: 12px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
 }
 .divisor-transaccion {
   border-top: 1px solid #444;
@@ -336,6 +362,7 @@ body {
   text-align: center;
   margin: 0 0 15px 0;
   padding: 12px 0 12px 0;
+  padding-top: calc(12px + env(safe-area-inset-top));
   border-bottom: 1px solid #333;
 }
 .titulo-encabezado {
@@ -346,6 +373,7 @@ body {
   font-weight: 900;
   color: var(--txt-blanco);
   font-style: italic;
+  line-height: 1.2;
 }
 .subtitulo-encabezado {
   font-family: var(--fuente-subtitulo);
@@ -496,7 +524,13 @@ body {
 #pantalla-transaccion {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+}
+
+/* La pantalla de transacción es el contenedor de scroll
+   para que el header sticky y el padding funcionen bien */
+#pantalla-transaccion {
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 #pantalla-principal .encabezado-global,
 #pantalla-transaccion .encabezado-global {
@@ -610,7 +644,7 @@ body {
   flex-direction: column;
   height: 100%;
   gap: 12px;
-  overflow-y: auto;
+  overflow: visible;
 }
 
 /* Historial completo */

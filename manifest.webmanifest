@@ -1,0 +1,11 @@
+{
+  "name": "Las Cuentas Claras",
+  "short_name": "Cuentas Claras",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#121212",
+  "lang": "es",
+  "scope": "/",
+  "icons": []
+}
